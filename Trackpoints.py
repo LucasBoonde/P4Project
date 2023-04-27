@@ -26,28 +26,38 @@ ret, labels, stats, centroids = cv2.connectedComponentsWithStats(dst)
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,100,0.001)
 corners = cv2.cornerSubPix(gray,np.float32(centroids),(5,5),(-1,-1),criteria)
 
+points=[]
+
 for i in range(1,len(corners)):
     print(corners[i])
+    print(len(corners))
+    print("hej")
 img[dst>0.1*dst.max()]=[0,0,255]
 
+x1 = corners[1]
+y1 = corners[2]
+x2 = corners[3]
+y2 = corners[4]
+print('x1',x1[1])
+img1 = img[int(x1[0]):int(x2[0]),int(y1[1]):int(y2[1])]
+#img_crop = np.array()
+#img_crop = [y1:y1+y2, x1:x1+x2]
 
 
+print('x2',x2)
+print('y2',y2)
+
+#cv2.imshow("crop", img_crop)
 #dst = cv2.cornerHarris(binary, 2, 3, 0.04)
 
 #dst=cv2.dilate(dst,None)
 #img[dst>0.01*dst.max()]=[0,0,255]
 
-cv2.imshow('papir', img)
+cv2.imshow('papir', img1)
 cv2.waitKey(0)
 #def TrajectoryGenerationPoints(image)
     #Load Image
     #img = cv2.imread('OriginalImage', image)
-
-
-
-
-
-
 
 
     #return points
