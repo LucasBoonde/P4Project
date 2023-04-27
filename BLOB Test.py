@@ -5,6 +5,9 @@ import numpy as np
 
 # Load the image
 img = cv2.imread('Papir2.jpeg')
+cv2.imshow('img', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 # Convert the image to grayscale
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -79,7 +82,7 @@ largest_contour = max(contours, key=cv2.contourArea)
 # Get the perimeter of the largest contour
 perimeter = cv2.arcLength(largest_contour, True)
 
-# Generate 10 evenly spaced points along the perimeter of the contour
+# Generate X evenly spaced points along the perimeter of the contour
 n_points = 20
 points = [tuple(largest_contour[int(i * perimeter / n_points) % len(largest_contour)][0]) for i in range(n_points)]
 print(points)
