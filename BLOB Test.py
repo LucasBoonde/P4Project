@@ -4,6 +4,7 @@ import cv2
 from skimage.morphology import skeletonize
 import numpy as np
 
+
 # Load the image
 img = cv2.imread('paperSetup.jpg')
 
@@ -53,9 +54,9 @@ print(cy)
 
 
 # Display the result
-cv2.imshow('Original Image', img)
+"""cv2.imshow('Original Image', img)
 cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()"""
 
 #--- Crop the image to paper view
 
@@ -126,22 +127,22 @@ diagonalPxl = math.sqrt((w-x)**2+(h-y)**2)
 
 PPM = diagonalPxl / diagonalMM
 
-p = (w-x)**2
-print('p', p)
+#p = (w-x)**2
+"""print('p', p)
 print('h',h)
 print('x',x)
 print('y',y)
 print('w',w)
 print(diagonalPxl)
-print('PPM',PPM)
+print('PPM',PPM)"""
 
 # Crop the image to the bounding box
 #cropped_image = img[y:y+h, x:x+w]
 cropped_image = img[y:y+h, x:x+w]
 
 # Display the cropped image
-cv2.imshow('Cropped Image1', cropped_image)
-cv2.waitKey(0)
+"""cv2.imshow('Cropped Image1', cropped_image)
+cv2.waitKey(0)"""
 
 # --- EDGE DETECTION INSIDE PAPER ---
 
@@ -152,8 +153,8 @@ gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Apply a threshold to create a binary image
 ret, thresh = cv2.threshold(gray, 40, 255, cv2.THRESH_BINARY_INV)
-cv2.imshow('Thresh', thresh)
-cv2.waitKey(0)
+"""cv2.imshow('Thresh', thresh)
+cv2.waitKey(0)"""
 
 
 
@@ -187,25 +188,32 @@ print(len(points))
 cv2.drawContours(img, [largest_contour], 0, (0, 255, 0), 2)
 for point in points:
     cv2.circle(img, point, 3, (0, 0, 255), -1)
+    print('current point', point)
 """cv2.imshow('Contour and Points', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()"""
 
+print('Len Point', len(point))
 
 # Define the reference point (in this case, the top-left corner of the image)
-ref_point = [cx, cy]#The top left side of the paper
+ref_point = [cx, cy - 280] #Reference point minus the length in the x and y direction to the actual 0-point
+
 
 #Length to points in real life
 #Pixels per metric = object width / known width
 
 # Make the points relative to the reference point
+
 points = [(math.sqrt(abs(point[0]**2 - ref_point[0]**2)) / PPM,
            math.sqrt(abs(point[1]**2 - ref_point[1]**2)) / PPM)
           for point in points]
 #points = [(point[0] - ref_point[0], point[1] - ref_point[1]) for point in points]
 
 # Print the relative points
-print('points',points)
+print('points', points)
+print('point[0]', points[0])
+print('point[1]', points[1])
+
 
 cv2.imshow('Contour and Points', img)
 cv2.waitKey(0)
