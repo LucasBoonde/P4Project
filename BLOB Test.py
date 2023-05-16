@@ -7,6 +7,8 @@ import numpy as np
 
 # Load the image
 img = cv2.imread('paperSetup.jpg')
+cv2.imshow("img", img)
+cv2.waitKey(0)
 
 #Isolate the reference point in the image
 # Define lower and upper bounds for blue color in RGB format
