@@ -47,14 +47,13 @@ def getCurrent(thNow,dthNow,ddqC):
 
 
 
-def controller(M, H, qref, dqref, ddqref, q, dq):
+def controller(qref, dqref, ddqref, q, dq):
     kp = 0
     kd = 0
+    ki = 0
 
-    indputq = ddqref + kp*(qref-q)+kd*(dqref-dq)
-    tau = M * indputq + H
-
-    return tau
+    indputq = ddqref + kp*(qref-q)+kd*(dqref-dq) #Tilføje ki
+    return indputq
 
 
 
