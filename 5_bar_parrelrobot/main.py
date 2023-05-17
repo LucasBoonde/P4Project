@@ -19,6 +19,8 @@ thNow = np.array([[th1Now], [th2Now]], dtype=float)
 dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
 ddqC = np.array([[ddq1C], [ddq2C]])
 
+integral = 0
+
 def write_read(x):
     while True:
         arduino.write(bytes(x, 'utf-8'))
@@ -45,7 +47,7 @@ def getCurrent(thNow,dthNow,ddqC):
     current = np.array([current1,current2])
     return current
 
-integral = 0
+
 def accumulateError(integral, q, qref):
     integral += q - qref
     return integral
