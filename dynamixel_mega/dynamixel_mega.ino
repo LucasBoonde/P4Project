@@ -1,19 +1,3 @@
-/*******************************************************************************
-* Copyright 2016 ROBOTIS CO., LTD.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*******************************************************************************/
-
 #include <DynamixelShield.h>
 
 const uint8_t DXL_ID = 1;
@@ -86,35 +70,65 @@ void loop()
       }
     message += c;
     delay(2); //For at give tid til at alle characters bliver modtaget.
+    //Serial1.print(message);
   }
+  //Serial1.print(message+ "#");
+  char indicator;
   double Tau[2];
-  //Sæt opdelings tegnet til ',' og hvis der er flere end 0 ',' i beskeden opdeles beskeden så alt der er før bliver til en og alt der er efter bliver til en anden besked.
-  int OpdelingsIndex = message.indexOf(',');
-  if (OpdelingsIndex >= 0) 
+  //Serial1.print(message);
+  int OpdelingsIndexIndicator = message.indexOf('#');
+  if (OpdelingsIndexIndicator >= 0)
   {
-    
-    Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
-    Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-    //Serial1.print(String(Tau1));
+    String indicatorString = message.substring(0,OpdelingsIndexIndicator);
+    message = message.substring(OpdelingsIndexIndicator+1);
+    if (indicatorString.equals("I"))
+    {
+      
+      //Sæt opdelings tegnet til ',' og hvis der er flere end 0 ',' i beskeden opdeles beskeden så alt der er før bliver til en og alt der er efter bliver til en anden besked.
+      int OpdelingsIndex = message.indexOf(',');
+      
+      if (OpdelingsIndex >= 0) 
+        {
+          Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
+          Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
+          Serial1.println("strømstyrke værdier er:" + String(Tau[0]) +" og "+ String(Tau[1]) + "#Modtaget");
+          
+          //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
+          dxl.setGoalPosition(DXL_ID, Tau[0], UNIT_DEGREE);
+          dxl.setGoalPosition(DXL_ID2, Tau[1], UNIT_DEGREE);
+        }
+      
+    }
+    if (indicatorString.equals("P"))
+    {       
+       String positionNow = "position#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#Modtaget";
+       Serial1.print(positionNow);
+    }
   }
-  Serial.print(String(Tau[0]));
-  String output = "#" +String(Tau[0])+"og"+String(Tau[1])+"#Modtaget";
+  
+  
+
+  
+  
+  
+ 
 
 
-  //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
-  dxl.setGoalPosition(DXL_ID, Tau[0], UNIT_DEGREE);
-  dxl.setGoalPosition(DXL_ID2, Tau[1], UNIT_DEGREE);
-  delay(1000);
+  
+
+
+  
+  
 
 
   //Print nuværende position til Serial1 linjen
-  Serial1.print("Present Position 1(degree) : ");
-  Serial1.println(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE));
+  //Serial1.print("Present Position 1(degree) : ");
+  //Serial1.println(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE));
 
-  Serial1.print("Present Position 2(degree) : ");
-  Serial1.println(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE));
-
-
-  Serial1.print(message);
-  Serial1.println(output);
+  //Serial1.print("Present Position 2(degree) : ");
+  //Serial1.println(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE));
+  String output = "#" +String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+"og"+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#Modtaget";
+  
+  //Serial1.print(message);
+  //Serial1.println(output);
 }

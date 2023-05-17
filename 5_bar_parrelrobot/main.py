@@ -18,21 +18,25 @@ ddq2C = 1.12
 thNow = np.array([[th1Now], [th2Now]], dtype=float)
 dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
 ddqC = np.array([[ddq1C], [ddq2C]])
-
 def write_read(x):
+
     while True:
         arduino.write(bytes(x, 'utf-8'))
+        print(x)
+
         time.sleep(0.05)
         data = arduino.readline().decode().strip()
+
+
+
         parts = data.split("#")
+
         print(parts)
-        if len(parts) > 1 and parts[len(parts)-1] == "Modtaget":  #Kig efter om det sidste element i den modtagene besked er en Stopbesked
+
+        if len(parts) > 1 and parts[len(parts) - 1] == "Modtaget": #Kig efter om det sidste element i den modtagene besked er en Stopbesked
             break
 
-    values = parts[0].split(",")
-    print("Values:"+ str(values))
-    print("Values er: "+ str(values[0]) + " og " + str(values[1]))
-    return values
+    return parts
 
 def getCurrent(thNow,dthNow,ddqC):
     tau = eng.dynamic(thNow[0], thNow[1], dthNow[0], dthNow[1], ddqC[0], ddqC[1])
@@ -46,8 +50,22 @@ def getCurrent(thNow,dthNow,ddqC):
     return current
 
 
+def SendCurrent(current):
+    message = ("I"+"#"+str(current[0]) + ',' + str(current[1]))
+    write_read(message)
+
+def AskForPostion():
+    while True:
+        message = ("P"+"#")
+        returnMessage = write_read(message)
+        position = returnMessage[1].split(",")
+        print(position[0])
+        if returnMessage[0] == "position":
+            break
 
 
+        #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
+    return position
 
 
 
@@ -55,9 +73,15 @@ while True:
     num = input("Enter a number: ")
     if num == "Go":
         current = getCurrent(thNow, dthNow, ddqC)
-        String = (str(current[0]) + ',' + str(current[1]))
-        value = write_read(String)
-        print(value)
+        #String = (str(current[0]) + ',' + str(current[1]))
+        #String = (str(206) + ',' + str(215.74))
+        #String =("I" + "#" + str(current[0]) + ',' + str(current[1]))
+        #value = write_read(String)
+        SendCurrent(current)
+        positionNow = AskForPostion()
+        print(positionNow)
+        print(positionNow[0])
+        print(positionNow[1])
 
 
 
