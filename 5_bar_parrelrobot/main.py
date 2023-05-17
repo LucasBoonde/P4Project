@@ -48,9 +48,9 @@ def getCurrent(thNow,dthNow,ddqC):
     return current
 
 
-def accumulateError(integral, q, qref):
-    integral += q - qref
-    return integral
+#def accumulateError(integral, q, qref):
+ #   integral += q - qref
+  #  return integral
 
 def controller(qref, dqref, ddqref, q, dq, integral):
     kp = 7.814
