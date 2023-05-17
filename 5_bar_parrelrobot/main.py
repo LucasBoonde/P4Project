@@ -45,14 +45,17 @@ def getCurrent(thNow,dthNow,ddqC):
     current = np.array([current1,current2])
     return current
 
+integral = 0
+def accumulateError(integral, q, qref):
+    integral += q - qref
+    return integral
 
+def controller(qref, dqref, ddqref, q, dq, integral):
+    kp = 7.814
+    kd = 6.861
+    ki = 2.166
 
-def controller(qref, dqref, ddqref, q, dq):
-    kp = 0
-    kd = 0
-    ki = 0
-
-    indputq = ddqref + kp*(qref-q)+kd*(dqref-dq) #Tilføje ki
+    indputq = ddqref + kp*(qref-q) + kd*(dqref-dq) + ki*integral
     return indputq
 
 
