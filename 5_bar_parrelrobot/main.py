@@ -2,6 +2,8 @@ import matlab.engine
 import numpy as np
 import time
 import serial
+import math
+
 
 arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
@@ -70,6 +72,30 @@ def AskForPostion():
 
 
 
+def get_theta_difference(thNow, thDesired):
+    thNow_rad = math.radians(thNow)
+    thDesired_rad = math.radians(thDesired)
+    return math.degrees(abs(thDesired_rad - thNow_rad))
+
+def check_accomp_pos(current_theta, desired_theta, threshold):
+    for i in range(len(current_theta)):
+        theta_difference = get_theta_difference(current_theta[i], desired_theta[i])
+        if theta_difference > threshold:
+            return False, None
+    return True, desired_theta
+
+current_theta = [86, 46]
+desired_theta = [[90, 45], [60, 30]]
+threshold = 5
+
+accomp, accomp_theta = check_accomp_pos(current_theta, desired_theta[0], threshold)
+if accomp:
+    print(f"Desired angle accomplished: {accomp_theta}")
+else:
+    print("Desired angle not accomplished")
+
+
+
 while True:
     num = input("Enter a number: ")
     if num == "Go":
@@ -85,9 +111,12 @@ while True:
             print(positionNow)
             print(positionNow[0])
             print(positionNow[1])
+            startTime = time.time()
 
             SendCurrent(-current)
             positionNow = AskForPostion()
-
+            timerun = time.time()
+            exTime =startTime-time
+            print(exTime)
 
 
