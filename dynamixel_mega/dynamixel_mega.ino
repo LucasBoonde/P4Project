@@ -39,14 +39,6 @@ void setup() {
   dxl.torqueOn(DXL_ID2);
 
 
-
-  // Set velocity and acceleration (ONLY RELEVANT FOR TESTING IN POSITION CONTROL MODE, OUTCOMMENT FOR CURRENT MODE)
-  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 1000);
-  
-  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID2, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 1000);
-
 }
 
 void loop() 
@@ -94,8 +86,8 @@ void loop()
           Serial1.println("strømstyrke værdier er:" + String(Tau[0]) +" og "+ String(Tau[1]) + "#Modtaget");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
-          dxl.setGoalCurrent(DXL_ID, Tau[0]*1000);
-          dxl.setGoalCurrent(DXL_ID, Tau[1]*1000);
+          dxl.setGoalCurrent(DXL_ID, Tau[0]);
+          dxl.setGoalCurrent(DXL_ID2, Tau[1]);
           
         }
       

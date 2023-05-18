@@ -3,14 +3,21 @@ import numpy as np
 import time
 import serial
 
-arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
+#arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
+ts = np.loadtxt('ts.txt', delimiter=",")
+refq1 = np.loadtxt('refq1.txt', delimiter=",")
+refq2 = np.loadtxt('refq2.txt', delimiter=",")
+refdq1 = np.loadtxt('refdq1.txt', delimiter=",")
+refdq2 = np.loadtxt('refdq2.txt', delimiter=",")
+refddq1 = np.loadtxt('refddq1.txt', delimiter=",")
+refddq2 = np.loadtxt('refddq2.txt', delimiter=",")
 
 #Den nuværende position for motor 1 og 2
-th1Now = 3.79
-th2Now = 3.07
+th1Now = 1.81
+th2Now = 1.80
 #Den nuværende hastighed for motor 1 og 2
-dth1Now = -0.05
+dth1Now = 0.01
 dth2Now = 0.02
 #Accleration regnet fra controler
 ddq1C = -2.50
@@ -57,7 +64,7 @@ def getCurrent(thNow,dthNow,ddqC):
 
 def SendCurrent(current):
     message = ("I"+"#"+str(current[0]) + ',' + str(current[1]))
-    String = ("I#" + str(206) + ',' + str(215.74))
+    #String = ("I#" + str(160) + ',' + str(100))
     write_read(message)
 
 def AskForPostion():
@@ -68,7 +75,6 @@ def AskForPostion():
         print(position[0])
         if returnMessage[0] == "position":
             break
-
 
         #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
     return position
@@ -98,18 +104,18 @@ while True:
     num = input("Enter a number: ")
     if num == "Go":
         current = getCurrent(thNow, dthNow, ddqC)
-        #String = (str(current[0]) + ',' + str(current[1]))
-        String = ("I"+str(206) + ',' + str(215.74))
-        #String =("I" + "#" + str(current[0]) + ',' + str(current[1]))
-        #value = write_read(String)
         while True:
-            SendCurrent(current)
-            positionNow = AskForPostion()
 
-            print(positionNow)
-            print(positionNow[0])
-            print(positionNow[1])
 
+            #SendCurrent(current)
+            #positionNow = AskForPostion()
+
+            #print(positionNow)
+            #print(positionNow[0])
+            #print(positionNow[1])
+
+            #SendCurrent(-current)
+            #positionNow = AskForPostion()
             SendCurrent(-current)
             positionNow = AskForPostion()
             #angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
