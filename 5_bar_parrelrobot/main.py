@@ -5,6 +5,13 @@ import serial
 
 #arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
+ts = np.loadtxt('ts.txt', delimiter=",")
+refq1 = np.loadtxt('refq1.txt', delimiter=",")
+refq2 = np.loadtxt('refq2.txt', delimiter=",")
+refdq1 = np.loadtxt('refdq1.txt', delimiter=",")
+refdq2 = np.loadtxt('refdq2.txt', delimiter=",")
+refddq1 = np.loadtxt('refddq1.txt', delimiter=",")
+refddq2 = np.loadtxt('refddq2.txt', delimiter=",")
 
 #Den nuværende position for motor 1 og 2
 th1Now = 1.81
@@ -18,6 +25,11 @@ ddq2C = 1.12
 thNow = np.array([[th1Now], [th2Now]], dtype=float)
 dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
 ddqC = np.array([[ddq1C], [ddq2C]])
+
+#For Calculating Velocity
+tOld = np.zeros(1, 2)
+#posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
+
 def write_read(x):
 
     while True:
@@ -69,13 +81,31 @@ def AskForPostion():
 
 
 
+
+def CalculateAngVelocity(posOld, tOld):
+    #Make a 2x2 Matrix That holds the old position of the motor and the new
+    #Calculate velocity by: (ThetaNu - Theta Sidste  Sample)/ (Tiden Nu - Tiden Sidste Sample)
+    posNew = np.array(positionNow[0], positionNow[1])
+    tNew = np.array(time.time(), time.time())
+
+    angVel = np.zeros(1, 2)
+
+    pDif = (posNew - posOld)
+    tDif = (tNew - tOld)
+    angVel = pDif/tDif
+
+    #After Calculations has been made
+    posOld = posNew
+    tOld = tNew
+
+    return angVel
+
 while True:
     num = input("Enter a number: ")
     if num == "Go":
         current = getCurrent(thNow, dthNow, ddqC)
         while True:
 
-            print(current)
 
             #SendCurrent(current)
             #positionNow = AskForPostion()
@@ -86,6 +116,18 @@ while True:
 
             #SendCurrent(-current)
             #positionNow = AskForPostion()
+            SendCurrent(-current)
+            positionNow = AskForPostion()
+            #angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
 
 
+def main():
+    #Initialize necessary functions
+    posOld = AskForPostion()
+    tOld = time.time()
+    # Add other functions that should be initialized when the script starts
+    # Add input in console, to tell the script to start GOING!
+    
 
+if __name__ == "__main__":
+    main()
