@@ -18,6 +18,11 @@ ddq2C = 1.12
 thNow = np.array([[th1Now], [th2Now]], dtype=float)
 dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
 ddqC = np.array([[ddq1C], [ddq2C]])
+
+#For Calculating Velocity
+tOld = np.zeros(1, 2)
+posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
+
 def write_read(x):
 
     while True:
@@ -70,6 +75,26 @@ def AskForPostion():
 
 
 
+
+def CalculateAngelocity(posOld, tOld):
+    #Make a 2x2 Matrix That holds the old position of the motor and the new
+    #Calculate velocity by: (ThetaNu - Theta Sidste  Sample)/ (Tiden Nu - Tiden Sidste Sample)
+    posNew = np.array(positionNow[0], positionNow[1])
+
+    tNew = np.array(time.time(), time.time())
+
+    angVel = np.zeros(1, 2)
+
+    pDif = (posNew - posOld)
+    tDif = (tNew - tOld)
+    angVel = pDif/tDif
+
+    #After Calculations has been made
+    posOld = posNew
+    tOld = tNew
+
+    return angVel
+
 while True:
     num = input("Enter a number: ")
     if num == "Go":
@@ -88,6 +113,7 @@ while True:
 
             SendCurrent(-current)
             positionNow = AskForPostion()
+            #angVelNow = CalculateAngelocity(positionNow(0), positionNow(1))
 
 
 
