@@ -47,13 +47,14 @@ def getCurrent(thNow,dthNow,ddqC):
     return current
 
 
-def controlSystem(qref, dqref, ddqref, q, dq, samplingtime):
+def controlSystem(thRef, dthRef, ddthRef, thNow, dthNow, samplingtime):
+    #Teoretiske værdier for control system, skal muligvis ændres
     kp = 7.814
     kd = 6.861
     ki = 2.166
 
-    indputq = ddqref + kp*(qref-q) + kd*(dqref-dq) + ki*samplingtime
-    return indputq
+    ddqControl = ddthRef + kp*(thRef-thNow) + kd*(dthRef-dthNow) + ki*(thRef-thNow)*samplingtime
+    return ddqControl
 
 
 
