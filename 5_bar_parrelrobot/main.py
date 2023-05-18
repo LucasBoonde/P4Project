@@ -118,7 +118,9 @@ while True:
 def main():
     #Initialize necessary functions
     posOld = AskForPostion()
+    print(posOld)
     tOld = time.time()
+    print(tOld)
     # Add other functions that should be initialized when the script starts
     # Add input in console, to tell the script to start GOING!
     
