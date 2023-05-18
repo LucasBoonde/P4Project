@@ -5,6 +5,13 @@ import serial
 
 arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
+ts = np.loadtxt('ts.txt', delimiter=",")
+refq1 = np.loadtxt('refq1.txt', delimiter=",")
+refq2 = np.loadtxt('refq2.txt', delimiter=",")
+refdq1 = np.loadtxt('refdq1.txt', delimiter=",")
+refdq2 = np.loadtxt('refdq2.txt', delimiter=",")
+refddq1 = np.loadtxt('refddq1.txt', delimiter=",")
+refddq2 = np.loadtxt('refddq2.txt', delimiter=",")
 
 #Den nuværende position for motor 1 og 2
 th1Now = 3.79
