@@ -28,14 +28,14 @@ void setup() {
 
   // Turn off torque when configuring items in EEPROM area - Jeg ved faktisk ikke om man skal sætte den i position mode for at aflæse positionen, men det tror jeg
   dxl.torqueOff(DXL_ID);
-  dxl.setOperatingMode(DXL_ID, OP_POSITION);
+  dxl.setOperatingMode(DXL_ID, OP_CURRENT);
   dxl.torqueOn(DXL_ID);
 
   dxl.ping(DXL_ID2);
 
   // Turn off torque when configuring items in EEPROM area
   dxl.torqueOff(DXL_ID2);
-  dxl.setOperatingMode(DXL_ID2, OP_POSITION);
+  dxl.setOperatingMode(DXL_ID2, OP_CURRENT);
   dxl.torqueOn(DXL_ID2);
 
 
@@ -94,8 +94,9 @@ void loop()
           Serial1.println("strømstyrke værdier er:" + String(Tau[0]) +" og "+ String(Tau[1]) + "#Modtaget");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
-          dxl.setGoalPosition(DXL_ID, Tau[0], UNIT_DEGREE);
-          dxl.setGoalPosition(DXL_ID2, Tau[1], UNIT_DEGREE);
+          dxl.setGoalCurrent(DXL_ID, Tau[0]*1000);
+          dxl.setGoalCurrent(DXL_ID, Tau[1]*1000);
+          
         }
       
     }

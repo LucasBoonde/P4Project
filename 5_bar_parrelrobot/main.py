@@ -52,6 +52,7 @@ def getCurrent(thNow,dthNow,ddqC):
 
 def SendCurrent(current):
     message = ("I"+"#"+str(current[0]) + ',' + str(current[1]))
+    String = ("I#" + str(206) + ',' + str(215.74))
     write_read(message)
 
 def AskForPostion():
@@ -74,14 +75,19 @@ while True:
     if num == "Go":
         current = getCurrent(thNow, dthNow, ddqC)
         #String = (str(current[0]) + ',' + str(current[1]))
-        #String = (str(206) + ',' + str(215.74))
+        String = ("I"+str(206) + ',' + str(215.74))
         #String =("I" + "#" + str(current[0]) + ',' + str(current[1]))
         #value = write_read(String)
-        SendCurrent(current)
-        positionNow = AskForPostion()
-        print(positionNow)
-        print(positionNow[0])
-        print(positionNow[1])
+        while True:
+            SendCurrent(current)
+            positionNow = AskForPostion()
+
+            print(positionNow)
+            print(positionNow[0])
+            print(positionNow[1])
+
+            SendCurrent(-current)
+            positionNow = AskForPostion()
 
 
 
