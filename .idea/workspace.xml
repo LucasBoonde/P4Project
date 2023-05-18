@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="a42a77da-cfef-41b7-bb9c-3bceb49f6f17" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" afterDir="false" />
@@ -42,7 +45,6 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\jeppe\OneDrive\Dokumenter\GitHub\P4Project\5_bar_parrelrobot\.idea" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
