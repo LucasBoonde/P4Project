@@ -79,8 +79,14 @@ def AskForPostion():
 
         #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
     return position
+def controlSystem(thRef, dthRef, ddthRef, thNow, dthNow, samplingtime):
+    #Teoretiske værdier for control system, skal muligvis ændres
+    kp = 39.48
+    kd = 12.57
+    ki = 10
 
-
+    ddqControl = ddthRef + kp*(thRef-thNow) + kd*(dthRef-dthNow) + ki*(thRef-thNow)*samplingtime
+    return ddqControl
 
 
 def CalculateAngVelocity(posOld, tOld):
