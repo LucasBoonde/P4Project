@@ -21,7 +21,7 @@ ddqC = np.array([[ddq1C], [ddq2C]])
 
 #For Calculating Velocity
 tOld = np.zeros(1, 2)
-posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
+#posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
 
 def write_read(x):
 
@@ -76,11 +76,10 @@ def AskForPostion():
 
 
 
-def CalculateAngelocity(posOld, tOld):
+def CalculateAngVelocity(posOld, tOld):
     #Make a 2x2 Matrix That holds the old position of the motor and the new
     #Calculate velocity by: (ThetaNu - Theta Sidste  Sample)/ (Tiden Nu - Tiden Sidste Sample)
     posNew = np.array(positionNow[0], positionNow[1])
-
     tNew = np.array(time.time(), time.time())
 
     angVel = np.zeros(1, 2)
@@ -113,7 +112,16 @@ while True:
 
             SendCurrent(-current)
             positionNow = AskForPostion()
-            #angVelNow = CalculateAngelocity(positionNow(0), positionNow(1))
+            #angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
 
 
+def main():
+    #Initialize necessary functions
+    posOld = AskForPostion()
+    tOld = time.time()
+    # Add other functions that should be initialized when the script starts
+    # Add input in console, to tell the script to start GOING!
+    
 
+if __name__ == "__main__":
+    main()
