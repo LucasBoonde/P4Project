@@ -19,7 +19,6 @@ thNow = np.array([[th1Now], [th2Now]], dtype=float)
 dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
 ddqC = np.array([[ddq1C], [ddq2C]])
 
-integral = 0
 
 def write_read(x):
     while True:
@@ -48,16 +47,12 @@ def getCurrent(thNow,dthNow,ddqC):
     return current
 
 
-#def accumulateError(integral, q, qref):
- #   integral += q - qref
-  #  return integral
-
-def controller(qref, dqref, ddqref, q, dq, integral):
+def controlSystem(qref, dqref, ddqref, q, dq, samplingtime):
     kp = 7.814
     kd = 6.861
     ki = 2.166
 
-    indputq = ddqref + kp*(qref-q) + kd*(dqref-dq) + ki*integral
+    indputq = ddqref + kp*(qref-q) + kd*(dqref-dq) + ki*samplingtime
     return indputq
 
 
