@@ -49,9 +49,9 @@ def getCurrent(thNow,dthNow,ddqC):
 
 def controlSystem(thRef, dthRef, ddthRef, thNow, dthNow, samplingtime):
     #Teoretiske værdier for control system, skal muligvis ændres
-    kp = 7.814
-    kd = 6.861
-    ki = 2.166
+    kp = 39.48
+    kd = 12.57
+    ki = 10
 
     ddqControl = ddthRef + kp*(thRef-thNow) + kd*(dthRef-dthNow) + ki*(thRef-thNow)*samplingtime
     return ddqControl
