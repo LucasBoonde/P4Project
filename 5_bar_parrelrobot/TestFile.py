@@ -6,7 +6,7 @@ i = 0 #Variable resonsible for the itterations in given point
 j = 0 #Variable responsible for the current trajectory
 tItteration = 0 #number of itterations the current trajectory - Måske skal den være 1?
 
-ts = [0,15,25,35]
+ts = [0,1,2,3]
 points = [10, 20, 30, 40]
 len(points)
 
@@ -56,8 +56,7 @@ while True:
                 # angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
 
                 sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
-                tItteration += 1  # adds one to the itteration
-                print("Loop took: ", + sFinLoop,  str(" Seconds"))
+                print("Loop took: ", + round(sFinLoop, 6),  str(" Seconds"))
                 print("-----------------------------------------")
                 print("---------------")
                 print("---------------")
@@ -65,11 +64,17 @@ while True:
                 print("-----------------------------------------")
                 print("Working on crack: ", + j+1, str("and currently at: "), + i+1, str("of: "), + numPtsInTraj, str("points"))
                 print("-----------------------------------------")
-            if i >= len(ts):
+
+                tItteration += 1  # adds one to the itteration
+
+
+            if i >= len(ts) and j >= len(points):
+                i = 0
+                j = 0
                 break
 
-            elif j >= len(points):
-                break
+
+
 
 if __name__ == "__main__":
     main()
