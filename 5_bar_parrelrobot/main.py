@@ -31,7 +31,8 @@ tOld = np.zeros(1, 2)
 #posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
 
 tSample = 0.3 #Sample time for control system
-i = 0
+i = 0 #Variable resonsible for the itterations in given point
+j = 0 #Variable responsible for the current trajectory
 tItteration = 0 #number of itterations the current trajectory - Måske skal den være 1?
 #numPtsInTraj = (ts+1-ts)/tSample #Number of points in current trajectory. Should be updated when reaching new point.
 
@@ -165,8 +166,8 @@ def main():
                     # angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
 
                     sFinLoop = time.time() - tStartLoop # Checks the time at the end.
-                    tItteration += 1
-                    i += 1
+                    tItteration += 1 #adds one to the itteration
+                    
 
 
 
