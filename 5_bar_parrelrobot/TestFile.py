@@ -44,16 +44,12 @@ while True:
                     i += 1
                     j += 1
 
-                #SendCurrent(current)
-                #positionNow = AskForPostion()
-
-                #print(positionNow)
-                #print(positionNow[0])
-                #print(positionNow[1])
-
-                #SendCurrent(-current)
-                #positionNow = AskForPostion()
-                # angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
+                positionNow = AskForPostion()
+                angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+                accNow = controlSystem(positionNow, angVelNow, samplingtime=Ti, samplingsIterations=1, path=j)
+                print("acc" + str(accNow))
+                current = getCurrent(positionNow, angVelNow, accNow)
+                SendCurrent(current)
 
                 sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
                 tItteration += 1  # adds one to the itteration
@@ -65,10 +61,13 @@ while True:
                 print("-----------------------------------------")
                 print("Working on crack: ", + j+1, str("and currently at: "), + i+1, str("of: "), + numPtsInTraj, str("points"))
                 print("-----------------------------------------")
-            if i >= len(ts):
+            if i >= len(ts) and j >= len(points):
+                i = 0
+                j = 0
                 break
 
-            elif j >= len(points):
+            k = cv.waitKey(1)
+            if k == ord('q'):
                 break
 
 if __name__ == "__main__":

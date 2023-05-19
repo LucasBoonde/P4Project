@@ -3,6 +3,7 @@ import numpy as np
 import time
 import serial
 import cv2 as cv
+import math
 
 
 arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
@@ -16,20 +17,23 @@ refddq1 = np.loadtxt('refddq1.txt', delimiter=",")
 refddq2 = np.loadtxt('refddq2.txt', delimiter=",")
 # For Calculating Velocity
 tOld = np.zeros((1,2))
-Ti = 0.1
+
 
 #Den nuværende position for motor 1 og 2
-th1Now = 3.79
-th2Now = 3.07
+thNow = np.zeros((2,1))
+thNow[0][0] = 3.79
+thNow[1][0] = 3.07
+
+
 #Den nuværende hastighed for motor 1 og 2
-dth1Now = -0.05
-dth2Now = 0.02
+dthNow  = np.zeros((2,1))
+dthNow[0][0] = -0.05
+dthNow[1][0] = 0.02
 #Accleration regnet fra controler
-ddq1C = -2.50
-ddq2C = 1.12
-thNow = np.array([[th1Now], [th2Now]], dtype=float)
-dthNow = np.array([[dth1Now], [dth2Now]], dtype=float)
-ddqC = np.array([[ddq1C], [ddq2C]])
+ddthNow  = np.zeros((2,1))
+ddthNow[0][0] = -2.50
+ddthNow[1][0] = 1.12
+
 
 
 #posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
@@ -49,26 +53,28 @@ def write_read(x):
     return parts
 
 def getCurrent(thNow,dthNow,ddqC):
-
-    tau = eng.dynamic(thNow[0], thNow[1], dthNow[0], dthNow[1], ddqC[0], ddqC[1])
+    tau = eng.dynamic(thNow[0][0], thNow[1][0], dthNow[0][0], dthNow[1][0], ddqC[0][0], ddqC[1][0])
+    print(tau)
     tau = np.array(np.around(tau, decimals=2), dtype=float)
-    print("tau: " +str(tau))
     kt = 1.62
-    current = np.divide(tau, kt)
+    current = np.divide(tau, kt)*1000
     current = np.around(current, decimals=2)
-    print("type: " + str(type(current[1])))
-    current1 = (float(current[0]))
-    current2 = (float(current[1]))
+    print(current)
+    current1 = (float(current[0][0]))
+    current2 = (float(current[1][0]))
 
     current = np.zeros((2,1))
-    current[0] = current1
-    current[1] = current2
+    current[0][0] = current1
+    current[1][0] = current2
+    print("current:" + str(current[0][0])+"og " +str(current[1][0]))
     return current
 
 
 def SendCurrent(current):
     while True:
-        message = ("I#"+str(current[0]) + ',' + str(current[1]))
+
+        message = ("I#"+str(current[0][0]) + ',' + str(current[1][0]))
+        #message = ("I#" + str(0) + ',' + str(0))
         returnMessage = write_read(message)
         if returnMessage[0] == "I":
             break
@@ -82,10 +88,9 @@ def AskForPostion():
         returnMessage = write_read(message)
         if returnMessage[0] == "P":
             position = returnMessage[1].split(",")
-            positionNow[0] = float(position[0])
-            positionNow[1] = float(position[1])
-            positionNow[0] = 3.79
-            positionNow[1] = 3.07
+            positionNow[0] = (float(position[0])*math.pi)/180
+            positionNow[1] = (float(position[1])*math.pi)/180
+            #print(positionNow)
 
             break
         #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
@@ -98,18 +103,18 @@ def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
     ki = 10
     ddqControl = np.zeros((2,1))
     thRef = np.zeros((2,1))
-    thRef[0] = refq1[path][samplingsIterations]
-    thRef[1] = refq2[path][samplingsIterations]
+    thRef[0][0] = refq1[path][samplingsIterations]
+    thRef[1][0] = refq2[path][samplingsIterations]
     dthRef = np.zeros((2, 1))
-    dthRef[0] = refdq1[path][samplingsIterations]
-    dthRef[1] = refdq2[path][samplingsIterations]
+    dthRef[0][0] = refdq1[path][samplingsIterations]
+    dthRef[1][0] = refdq2[path][samplingsIterations]
     ddthRef = np.zeros((2, 1))
-    ddthRef[0] = refddq1[path][samplingsIterations]
-    ddthRef[1] = refddq2[path][samplingsIterations]
+    ddthRef[0][0] = refddq1[path][samplingsIterations]
+    ddthRef[1][0] = refddq2[path][samplingsIterations]
 
 
-    ddqControl[0] = ddthRef[0] + kp *(thRef[0]-thNow[0]) + kd*(dthRef[0]-dthNow[0]) + ki*(thRef[0]-thNow[0])*samplingtime
-    ddqControl[1] = ddthRef[0] + kp *(thRef[0]-thNow[0]) + kd*(dthRef[0]-dthNow[0]) + ki*(thRef[0]-thNow[0])*samplingtime
+    ddqControl[0] = ddthRef[0][0] + kp * (thRef[0][0] - thNow[0][0]) + kd*(dthRef[0][0] - dthNow[0][0]) + ki * (thRef[0][0] - thNow[0][0]) * samplingtime
+    ddqControl[1] = ddthRef[1][0] + kp * (thRef[1][0] - thNow[1][0]) + kd*(dthRef[1][0] - dthNow[1][0]) + ki * (thRef[1][0] - thNow[1][0]) * samplingtime
 
     return ddqControl
 
@@ -139,29 +144,67 @@ def main():
     #Initialize necessary functions
     posOld = AskForPostion()
     tOld = time.time()
+    tSample = 1  # Sample time for control system
+    i = 0  # Variable resonsible for the itterations in given point
+    j = 0  # Variable responsible for the current trajectory
+    tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?
+
+    ts = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]
+
+
 
 
     # Add other functions that should be initialized when the script starts
     # Add input in console, to tell the script to start GOING!
     while True:
-        num = input("Enter a number: ")
-        if num == "Go":
+        txtInput = input("Skriv Go for at starte programmet: ")
+        if txtInput == "Go":
+
+            tTimetoSample = time.time()
+
+
+            # Make ts = ts[0] og points[0]
+
             while True:
 
-                positionNow = AskForPostion()
+                tGlobal = time.time()  # Sets tStartLoop = actual time
 
-                angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
-                print(angVelNow)
+                if tTimetoSample <= tGlobal:
+                    tStarLoop = time.time()
+                    tTimetoSample = tTimetoSample + tSample
 
-                accNow= controlSystem(positionNow,angVelNow, samplingtime=Ti, samplingsIterations=1, path=1)
-                print("acc"+str(accNow))
-                current = getCurrent(positionNow, angVelNow, accNow)
-                SendCurrent(current)
+                    if tItteration == 0:  # If itteration is 0, calculate number of points in next trajectory
+                        numPtsInTraj = (ts[i + 1] - ts[i]) / tSample
 
+                    if tItteration >= numPtsInTraj:  # If tItteration is == points in current trajectory, go to the next one
+                        # ts[i] = ts[i + 1]
+                        # points[j] = points[j + 1]
+                        tItteration = 0
+                        i += 1
+                        j += 1
 
+                    positionNow = AskForPostion()
+                    angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+                    accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
+                    #current = getCurrent(thNow, dthNow, ddthNow)
+                    current = getCurrent(positionNow, angVelNow, accNow)
+                    SendCurrent(current)
 
-
-
+                    sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
+                    tItteration += 1  # adds one to the itteration
+                    print("Loop took: ", + sFinLoop, str(" Seconds"))
+                    print("-----------------------------------------")
+                    print("---------------")
+                    print("---------------")
+                    print("At Itteration: ", + tItteration)
+                    print("-----------------------------------------")
+                    print("Working on crack: ", + j + 1, str("and currently at: "), + i + 1, str("of: "),
+                          + numPtsInTraj, str("points"))
+                    print("-----------------------------------------")
+                if i >= len(ts) and j >= len(ts):
+                    i = 0
+                    j = 0
+                    break
 
                 k = cv.waitKey(1)
                 if k == ord('q'):

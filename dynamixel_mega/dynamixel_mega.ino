@@ -40,12 +40,6 @@ void setup() {
 
 
 
-  // Set velocity and acceleration (ONLY RELEVANT FOR TESTING IN POSITION CONTROL MODE, OUTCOMMENT FOR CURRENT MODE)
-  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID, 1000);
-  
-  dxl.writeControlTableItem(PROFILE_ACCELERATION, DXL_ID2, 50);
-  dxl.writeControlTableItem(PROFILE_VELOCITY, DXL_ID2, 1000);
 
 }
 
@@ -91,19 +85,35 @@ void loop()
         {
           Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
           Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-          Serial1.println("I#M");
+          Serial1.println("I#"+message+"#M");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
-          dxl.setGoalCurrent(DXL_ID, Tau[0]*1000);
-          dxl.setGoalCurrent(DXL_ID, Tau[1]*1000);
+          dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
           
         }
       
     }
     if (indicatorString.equals("P"))
     {       
-       String positionNow = "P#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M";
+       String positionNow = "P#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+message+"#M";
        Serial1.print(positionNow);
     }
   }
+  
+  
+
+  
+  
+  
+ 
+
+
+  
+
+
+  
+  
+
+
 }

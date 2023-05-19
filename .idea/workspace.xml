@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a42a77da-cfef-41b7-bb9c-3bceb49f6f17" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/ts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/P4Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/P4Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/TestFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/TestFile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/TrajectoryPlanningCBPOLY.m" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/TrajectoryPlanningCBPOLY.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/ts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/ts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dynamixel_mega/dynamixel_mega.ino" beforeDir="false" afterPath="$PROJECT_DIR$/dynamixel_mega/dynamixel_mega.ino" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

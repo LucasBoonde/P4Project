@@ -65,17 +65,17 @@ ylabel('qdotdot');
 title('Acceleration (deg / sec^2)');
 
 %Tidsintervaller mellem punkterne
-ts =        [0, 1, 2, 3];
+ts =        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110];
 
 
 %Points for theta1:
-points1 =    [187.5300, 200.9805, 176.0935, 187.1979];
+points1 = [1.9352,2.0524, 2.0141, 1.9396, 1.9371, 1.9225, 1.9239, 1.8117, 1.6789, 1.6235, 1.5723];
 
 %Points for theta2:
-points2 = [79.5666, 67.1239, 80.6454, 54.9624];
+points2 = [1.2164,1.0892, 1.1275, 1.1112, 1.2045, 1.2627, 1.3475, 1.3733, 1.4176, 1.5181, 1.5693];
 
-pointsdot1 = [0, 0, 0, 0];
-pointsdot2 = [0, 0, 0, 0];
+pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 
 
@@ -83,7 +83,7 @@ pointsdot2 = [0, 0, 0, 0];
 %Længden af Arrayet for punkterne
 L1 = length(points1);
 L2 = length(points2);
-Ti = 0.1; %Sample Time
+Ti = 1; %Sample Time
 
 n = length(ts);
 diffs= diff(ts)/Ti;
