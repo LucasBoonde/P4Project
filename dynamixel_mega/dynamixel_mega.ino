@@ -91,7 +91,7 @@ void loop()
         {
           Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
           Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-          Serial1.println("strømstyrke værdier er:" + String(Tau[0]) +" og "+ String(Tau[1]) + "#Modtaget");
+          Serial1.println("I#M");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           dxl.setGoalCurrent(DXL_ID, Tau[0]*1000);
@@ -102,34 +102,8 @@ void loop()
     }
     if (indicatorString.equals("P"))
     {       
-       String positionNow = "position#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#Modtaget";
+       String positionNow = "P#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M";
        Serial1.print(positionNow);
     }
   }
-  
-  
-
-  
-  
-  
- 
-
-
-  
-
-
-  
-  
-
-
-  //Print nuværende position til Serial1 linjen
-  //Serial1.print("Present Position 1(degree) : ");
-  //Serial1.println(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE));
-
-  //Serial1.print("Present Position 2(degree) : ");
-  //Serial1.println(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE));
-  String output = "#" +String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+"og"+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#Modtaget";
-  
-  //Serial1.print(message);
-  //Serial1.println(output);
 }
