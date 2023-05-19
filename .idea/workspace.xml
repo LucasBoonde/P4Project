@@ -5,12 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a42a77da-cfef-41b7-bb9c-3bceb49f6f17" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/5_bar_parrelrobot/ts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/main.py" afterDir="false" />
     </list>
@@ -37,12 +31,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "SampleTimeAndLoopIncrease"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />

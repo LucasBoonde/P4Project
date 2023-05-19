@@ -30,6 +30,12 @@ ddqC = np.array([[ddq1C], [ddq2C]])
 tOld = np.zeros(1, 2)
 #posOld = np.array(positionNow[0], positionNow[1]) #Skal ændres til at den bare bliver til posOld første gange den initializes
 
+tSample = 0.3 #Sample time for control system
+i = 0
+tItteration = 0 #number of itterations the current trajectory - Måske skal den være 1?
+#numPtsInTraj = (ts+1-ts)/tSample #Number of points in current trajectory. Should be updated when reaching new point.
+
+
 def write_read(x):
 
     while True:
@@ -107,34 +113,63 @@ def CalculateAngVelocity(posOld, tOld):
 
     return angVel
 
-while True:
-    num = input("Enter a number: ")
-    if num == "Go":
-        current = getCurrent(thNow, dthNow, ddqC)
-        #String = (str(current[0]) + ',' + str(current[1]))
-        String = ("I"+str(206) + ',' + str(215.74))
-        #String =("I" + "#" + str(current[0]) + ',' + str(current[1]))
-        #value = write_read(String)
-        while True:
-            SendCurrent(current)
-            positionNow = AskForPostion()
 
-            print(positionNow)
-            print(positionNow[0])
-            print(positionNow[1])
-
-            SendCurrent(-current)
-            positionNow = AskForPostion()
-            #angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
 
 
 def main():
     #Initialize necessary functions
+    global i
     posOld = AskForPostion()
     tOld = time.time()
     # Add other functions that should be initialized when the script starts
     # Add input in console, to tell the script to start GOING!
-    
+
+    while True:
+        num = input("Enter a number: ")
+        if num == "Go":
+            current = getCurrent(thNow, dthNow, ddqC)
+            # String = (str(current[0]) + ',' + str(current[1]))
+            String = ("I" + str(206) + ',' + str(215.74))
+            # String =("I" + "#" + str(current[0]) + ',' + str(current[1]))
+            # value = write_read(String)
+
+            tTimetoSample = time.time()
+            tGlobal = time.time()
+
+            # Make ts = ts[0] og points[0]
+
+            while True:
+
+                tGlobal = time.time() #Sets tStartLoop = actual time
+
+                if tTimetoSample <= tGlobal:
+                    tTimetoSample = tTimetoSample + tSample
+
+                    if tItteration == 0: #If itteration is 0, calculate number of points in next trajectory
+                        numPtsInTraj = (ts[i+1]-ts[i])/tSample
+
+                    if tItteration == numPtsInTraj: #If tItteration is == points in current trajectory, go to the next one
+                        ts[i] = ts[i+1]
+                        points[j] = points[j+1]
+                        tItteration == 0
+
+                    SendCurrent(current)
+                    positionNow = AskForPostion()
+
+                    print(positionNow)
+                    print(positionNow[0])
+                    print(positionNow[1])
+
+                    SendCurrent(-current)
+                    positionNow = AskForPostion()
+                    # angVelNow = CalculateAngVelocity(positionNow(0), positionNow(1))
+
+                    sFinLoop = time.time() - tStartLoop # Checks the time at the end.
+                    tItteration += 1
+                    i += 1
+
+
+
 
 if __name__ == "__main__":
     main()
