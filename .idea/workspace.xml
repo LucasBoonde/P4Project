@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42a77da-cfef-41b7-bb9c-3bceb49f6f17" name="Changes" comment="Somethinge is diffrent">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/TrajectoryPlanningCBPOLY.m" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/TrajectoryPlanningCBPOLY.m" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refddq2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refdq2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refq1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/5_bar_parrelrobot/refq2.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dynamixel_mega/dynamixel_mega.ino" beforeDir="false" afterPath="$PROJECT_DIR$/dynamixel_mega/dynamixel_mega.ino" afterDir="false" />
-    </list>
+    <list default="true" id="a42a77da-cfef-41b7-bb9c-3bceb49f6f17" name="Changes" comment="Somethinge is diffrent" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684570820797</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Somethinge is diffrent">
+      <created>1684574991769</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684574991769</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
