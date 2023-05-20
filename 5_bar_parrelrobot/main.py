@@ -55,7 +55,7 @@ def write_read(x):
 def getCurrent(thNow,dthNow,ddqC):
     tau = eng.dynamic(thNow[0][0], thNow[1][0], dthNow[0][0], dthNow[1][0], ddqC[0][0], ddqC[1][0])
     print(tau)
-    tau = np.array(np.around(tau, decimals=2), dtype=float)
+    tau = np.array(np.around(tau, decimals=4), dtype=float)
     kt = 1.62
     current = np.divide(tau, kt)*1000
     current = np.around(current, decimals=2)
@@ -88,9 +88,9 @@ def AskForPostion():
         returnMessage = write_read(message)
         if returnMessage[0] == "P":
             position = returnMessage[1].split(",")
-            positionNow[0] = (float(position[0])*math.pi)/180
-            positionNow[1] = (float(position[1])*math.pi)/180
-            #print(positionNow)
+            positionNow[0][0] = (float(position[0])*math.pi)/180
+            positionNow[1][0] = (float(position[1])*math.pi)/180
+            print(positionNow)
 
             break
         #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
@@ -101,6 +101,10 @@ def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
     kp = 39.48
     kd = 12.57
     ki = 10
+    kp = 0.2
+    kd = 0.7
+    ki = 0.6
+
     ddqControl = np.zeros((2,1))
     thRef = np.zeros((2,1))
     thRef[0][0] = refq1[path][samplingsIterations]
@@ -149,7 +153,7 @@ def main():
     j = 0  # Variable responsible for the current trajectory
     tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?
 
-    ts = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]
+    ts =  [0, 10, 20, 30, 40, 50, 60]
 
 
 
@@ -182,13 +186,18 @@ def main():
                         tItteration = 0
                         i += 1
                         j += 1
-
+                    startTime = time.time()
                     positionNow = AskForPostion()
+                    sluttime = time.time()
+                    executingTime = sluttime-startTime
+                    print("time: "+str(executingTime))
                     angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
                     accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
+                    print("acc: "+ str(accNow))
                     #current = getCurrent(thNow, dthNow, ddthNow)
                     current = getCurrent(positionNow, angVelNow, accNow)
                     SendCurrent(current)
+
 
                     sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
                     tItteration += 1  # adds one to the itteration

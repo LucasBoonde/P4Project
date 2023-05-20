@@ -65,17 +65,17 @@ ylabel('qdotdot');
 title('Acceleration (deg / sec^2)');
 
 %Tidsintervaller mellem punkterne
-ts =        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+ts =        [0, 10, 20, 30, 40, 50, 60];
 
 
 %Points for theta1:
-points1 = [1.9352,2.0524, 2.0141, 1.9396, 1.9371, 1.9225, 1.9239, 1.8117, 1.6789, 1.6235, 1.5723];
-
+%points1 = [1.7386, listinvth1];
+points1 = listinvth1;
 %Points for theta2:
-points2 = [1.2164,1.0892, 1.1275, 1.1112, 1.2045, 1.2627, 1.3475, 1.3733, 1.4176, 1.5181, 1.5693];
-
-pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+%points2 = [1.4114,  listinvth2];
+points2 = listinvth2;
+pointsdot1 = [0, 0, 0, 0, 0, 0, 0];
+pointsdot2 = [0, 0, 0, 0, 0, 0, 0];
 
 
 
@@ -147,11 +147,11 @@ for c = 1:L1-1
         
     end
     listq1(c, 1:diffs(c)) = q;
-    listq1 = round(listq1,2);
+    listq1 = round(listq1,4);
     listdq1(c, 1:diffs(c)) = qdot;
-    listdq1 = round(listdq1,2);
+    listdq1 = round(listdq1,4);
     listddq1(c, 1:diffs(c)) = qdotdot;
-    listddq1 = round(listddq1,2);
+    listddq1 = round(listddq1,4);
     %qref = generateQMatrix(c,q);
     %disp(result);
 
@@ -237,11 +237,11 @@ for c = 1:L2-1
         
     end
     listq2(c, 1:diffs(c)) = q;
-    listq2 = round(listq2,2);
+    listq2 = round(listq2,4);
     listdq2(c, 1:diffs(c)) = qdot;
-    listdq2 = round(listdq2,2);
+    listdq2 = round(listdq2,4);
     listddq2(c, 1:diffs(c)) = qdotdot;
-    listddq2 = round(listddq2,2);
+    listddq2 = round(listddq2,4);
     %qref = generateQMatrix(c,q);
     %disp(result);
 
