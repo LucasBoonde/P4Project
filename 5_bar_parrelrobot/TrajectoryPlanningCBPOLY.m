@@ -65,17 +65,17 @@ ylabel('qdotdot');
 title('Acceleration (deg / sec^2)');
 
 %Tidsintervaller mellem punkterne
-ts =        [0, 10, 20, 30, 40, 50, 60];
+ts =        [0, 10, 20, 30, 40, 50, 60, 70];
 
 
 %Points for theta1:
-%points1 = [1.7386, listinvth1];
-points1 = listinvth1;
+points1 = [2.0043, listinvth1];
+%points1 = listinvth1;
 %Points for theta2:
-%points2 = [1.4114,  listinvth2];
-points2 = listinvth2;
-pointsdot1 = [0, 0, 0, 0, 0, 0, 0];
-pointsdot2 = [0, 0, 0, 0, 0, 0, 0];
+points2 = [1.1442,  listinvth2];
+%points2 = listinvth2;
+pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];
+pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0];
 
 
 
@@ -83,17 +83,17 @@ pointsdot2 = [0, 0, 0, 0, 0, 0, 0];
 %Længden af Arrayet for punkterne
 L1 = length(points1);
 L2 = length(points2);
-Ti = 1; %Sample Time
+Ti = 0.2; %Sample Time
 
 n = length(ts);
 diffs= diff(ts)/Ti;
 BT=max( diffs(diffs>=0) );
-listq1= zeros(numel(diffs),BT);
-listq2=zeros(numel(diffs),BT);
-listdq1 = zeros(numel(diffs),BT); 
-listdq2 = zeros(numel(diffs),BT);
-listddq1 = zeros(numel(diffs),BT);
-listddq2 = zeros(numel(diffs),BT);
+listq1= zeros(numel(round(diffs)),round(BT));
+listq2=zeros(numel(round(diffs)),round(BT));
+listdq1 = zeros(numel(round(diffs)),round(BT)); 
+listdq2 = zeros(numel(round(diffs)),round(BT));
+listddq1 = zeros(numel(round(diffs)),round(BT));
+listddq2 = zeros(numel(round(diffs)),round(BT));
 %Function that calculates the trajectory for x points1
 for c = 1:L1-1
     tstart = ts(c);

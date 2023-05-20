@@ -85,11 +85,13 @@ void loop()
         {
           Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
           Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-          Serial1.println("I#"+message+"#M");
+          Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
-          dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
-          dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(DXL_ID, Tau[0]);
+          dxl.setGoalCurrent(DXL_ID2, Tau[1]);
+          //dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
+          //dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
           
         }
       

@@ -72,12 +72,17 @@ def getCurrent(thNow,dthNow,ddqC):
 
 def SendCurrent(current):
     while True:
-
+        positionNow = np.zeros((2, 1))
         message = ("I#"+str(current[0][0]) + ',' + str(current[1][0]))
         #message = ("I#" + str(0) + ',' + str(0))
         returnMessage = write_read(message)
         if returnMessage[0] == "I":
+            position = returnMessage[1].split(",")
+            positionNow[0][0] = (float(position[0]) * math.pi) / 180
+            positionNow[1][0] = (float(position[1]) * math.pi) / 180
             break
+
+    return positionNow
 
 
 def AskForPostion():
@@ -98,12 +103,13 @@ def AskForPostion():
     return positionNow
 def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
     #Teoretiske værdier for control system, skal muligvis ændres
+
     kp = 39.48
     kd = 12.57
     ki = 10
-    kp = 0.2
-    kd = 0.7
-    ki = 0.6
+    kp = 7.814
+    kd = 6.861
+    ki = 2.166
 
     ddqControl = np.zeros((2,1))
     thRef = np.zeros((2,1))
@@ -147,13 +153,15 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 def main():
     #Initialize necessary functions
     posOld = AskForPostion()
+    positionNow = posOld
+
     tOld = time.time()
-    tSample = 1  # Sample time for control system
+    tSample = 0.2  # Sample time for control system
     i = 0  # Variable resonsible for the itterations in given point
     j = 0  # Variable responsible for the current trajectory
     tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?
 
-    ts =  [0, 10, 20, 30, 40, 50, 60]
+    ts =  [0, 10, 20, 30, 40, 50, 60, 70]
 
 
 
@@ -178,7 +186,7 @@ def main():
                     tTimetoSample = tTimetoSample + tSample
 
                     if tItteration == 0:  # If itteration is 0, calculate number of points in next trajectory
-                        numPtsInTraj = (ts[i + 1] - ts[i]) / tSample
+                        numPtsInTraj = round((ts[i + 1] - ts[i]) / tSample)
 
                     if tItteration >= numPtsInTraj:  # If tItteration is == points in current trajectory, go to the next one
                         # ts[i] = ts[i + 1]
@@ -187,7 +195,8 @@ def main():
                         i += 1
                         j += 1
                     startTime = time.time()
-                    positionNow = AskForPostion()
+
+                    #positionNow = AskForPostion()
                     sluttime = time.time()
                     executingTime = sluttime-startTime
                     print("time: "+str(executingTime))
@@ -196,7 +205,8 @@ def main():
                     print("acc: "+ str(accNow))
                     #current = getCurrent(thNow, dthNow, ddthNow)
                     current = getCurrent(positionNow, angVelNow, accNow)
-                    SendCurrent(current)
+                    positionNow = SendCurrent(current)
+                    print("postion:" + str(positionNow))
 
 
                     sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
