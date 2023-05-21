@@ -69,11 +69,11 @@ ts =        [0, 10, 20, 30, 40, 50, 60, 70];
 
 
 %Points for theta1:
-%points1 = [1.5957, listinvth1];
-points1 = [1.5957, 1.5957, 1.5957]
+points1 = [1.8629, listinvth1];
+%points1 = [1.5957, 1.5957, 1.5957]
 %Points for theta2:
-%points2 = [1.5634,  listinvth2];
-points2 = listinvth2;
+points2 = [1.2870,  listinvth2];
+%points2 = listinvth2;
 pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];
 pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0];
 

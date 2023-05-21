@@ -6,7 +6,7 @@ import cv2 as cv
 import math
 
 
-arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM5', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
 ts = np.loadtxt('ts.txt', delimiter=",")
 refq1 = np.loadtxt('refq1.txt', delimiter=",")
@@ -55,19 +55,20 @@ def write_read(x):
 def getCurrent(thNow,dthNow,ddqC):
     tau = eng.dynamic(thNow[0][0], thNow[1][0], dthNow[0][0], dthNow[1][0], ddqC[0][0], ddqC[1][0])
     print(tau)
-    tau = np.array(np.around(tau, decimals=4), dtype=float)
+    tau = np.around(tau, decimals=4).astype(float)
     kt = 1.62
-    current = np.divide(tau, kt)*1000
-    current = np.around(current, decimals=2)
-    print(current)
-    current1 = (float(current[0][0]))
-    current2 = (float(current[1][0]))
-
-    current = np.zeros((2,1))
-    current[0][0] = current1
-    current[1][0] = current2
-    print("current:" + str(current[0][0])+"og " +str(current[1][0]))
+    current = np.round(np.divide(tau, kt) * 1000, decimals=2)
+    current1, current2 = float(current[0]), float(current[1])
+    current = np.array([[current1], [current2]])
+    print("current: " + str(current[0][0]) + " og " + str(current[1][0]))
     return current
+
+
+
+
+
+
+
 
 
 def SendCurrent(current):
@@ -151,6 +152,7 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 
 
 def main():
+    current = getCurrent(thNow, dthNow, ddthNow)
     #Initialize necessary functions
     posOld = AskForPostion()
     positionNow = posOld
@@ -203,7 +205,7 @@ def main():
                     angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
                     accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
                     print("acc: "+ str(accNow))
-                    #current = getCurrent(thNow, dthNow, ddthNow)
+
                     current = getCurrent(positionNow, angVelNow, accNow)
                     positionNow = SendCurrent(current)
                     print("postion:" + str(positionNow))
