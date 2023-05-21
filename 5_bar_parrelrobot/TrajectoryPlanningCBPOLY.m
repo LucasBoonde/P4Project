@@ -163,7 +163,7 @@ for c = 1:L1-1
     title('Position (deg)');
     hold on
     
-    plot(ts(c),points1(c), 'o')
+    %plot(ts(c),points1(c), 'o')
     
 
     % Opdater Velocity plot 1
@@ -172,7 +172,7 @@ for c = 1:L1-1
     xlabel('t');
     ylabel('qdot');
     title('Velocity (deg / sec)');
-    plot(ts(c),pointsdot1(c), 'o');
+    %plot(ts(c),pointsdot1(c), 'o');
     hold on;
 
 
@@ -253,7 +253,7 @@ for c = 1:L2-1
     title('Position (deg)');
     hold on
     
-    plot(ts(c),points2(c), 'o')
+    %plot(ts(c),points2(c), 'o')
     
 
     % Opdater Velocity plot 2
@@ -262,7 +262,7 @@ for c = 1:L2-1
     xlabel('t');
     ylabel('qdot');
     title('Velocity (deg / sec)');
-    plot(ts(c),pointsdot2(c), 'o');
+    %plot(ts(c),pointsdot2(c), 'o');
     hold on;
 
 
