@@ -152,7 +152,7 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 
 
 def main():
-    current = getCurrent(thNow, dthNow, ddthNow)
+    #current = getCurrent(thNow, dthNow, ddthNow)
     #Initialize necessary functions
     posOld = AskForPostion()
     positionNow = posOld
@@ -196,10 +196,7 @@ def main():
                         tItteration = 0
                         i += 1
                         j += 1
-                    startTime = time.time()
 
-                    #positionNow = AskForPostion()
-                    sluttime = time.time()
                     executingTime = sluttime-startTime
                     print("time: "+str(executingTime))
                     angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
