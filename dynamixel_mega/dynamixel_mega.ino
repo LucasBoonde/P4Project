@@ -43,6 +43,9 @@ void setup() {
 
 }
 
+
+
+
 void loop() 
 { 
   //Vendt til at der modtages noget på den seriale forbindelse
@@ -67,8 +70,11 @@ void loop()
     //Serial1.print(message);
   }
   //Serial1.print(message+ "#");
+
   char indicator;
+
   double Current[2];
+
   //Serial1.print(message);
   int OpdelingsIndexIndicator = message.indexOf('#');
   if (OpdelingsIndexIndicator >= 0)
@@ -90,8 +96,9 @@ void loop()
           dxl.setGoalCurrent(ID1, Current[0], UNIT_MILLI_AMPERE);
           dxl.setGoalCurrent(ID2, Current[1], UNIT_MILLI_AMPERE);
 
-          Serial1.println("I#"+String(dxl.getPresentPosition(ID1, UNIT_DEGREE))+","+String(dxl.getPresentPosition(ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(ID1, UNIT_RPM))+","+String(dxl.getPresentVelocity(ID2, UNIT_RPM))+"#M");
-          
+          unsigned long sampleTime = millis();
+          Serial1.println("I#"+String(dxl.getPresentPosition(ID1, UNIT_DEGREE))+","+String(dxl.getPresentPosition(ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(ID1, UNIT_RPM))+","+String(dxl.getPresentVelocity(ID2, UNIT_RPM))+"#"+String(sampleTime)+"#M");
+
         }
       
     }
