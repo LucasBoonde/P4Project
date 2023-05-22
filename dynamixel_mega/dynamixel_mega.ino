@@ -1,7 +1,7 @@
 #include <DynamixelShield.h>
 
-const uint8_t DXL_ID = 1;
-const uint8_t DXL_ID2 = 2;
+const uint8_t ID1 = 1;
+const uint8_t ID2 = 2;
 
 const float DXL_PROTOCOL_VERSION = 2.0;
 
@@ -24,19 +24,19 @@ void setup() {
   // Set Port Protocol Version. This has to match with DYNAMIXEL protocol version.
   dxl.setPortProtocolVersion(DXL_PROTOCOL_VERSION);
   // Get DYNAMIXEL information
-  dxl.ping(DXL_ID);
+  dxl.ping(ID1);
 
   // Turn off torque when configuring items in EEPROM area - Jeg ved faktisk ikke om man skal sætte den i position mode for at aflæse positionen, men det tror jeg
-  dxl.torqueOff(DXL_ID);
-  dxl.setOperatingMode(DXL_ID, OP_CURRENT);
-  dxl.torqueOn(DXL_ID);
+  dxl.torqueOff(ID1);
+  dxl.setOperatingMode(ID1, OP_CURRENT);
+  dxl.torqueOn(ID1);
 
-  dxl.ping(DXL_ID2);
+  dxl.ping(ID2);
 
   // Turn off torque when configuring items in EEPROM area
-  dxl.torqueOff(DXL_ID2);
-  dxl.setOperatingMode(DXL_ID2, OP_CURRENT);
-  dxl.torqueOn(DXL_ID2);
+  dxl.torqueOff(ID2);
+  dxl.setOperatingMode(ID2, OP_CURRENT);
+  dxl.torqueOn(ID2);
 
 
 
@@ -50,7 +50,7 @@ void loop()
   {
     
   }
-  String message = ""; //Vaiable til at genne beskeden i mens den kommer ind fra pc
+  String message = ""; //Variabel til at genne beskeden i mens den kommer ind fra pc
   while (Serial1.available()) 
   {
      
@@ -68,7 +68,7 @@ void loop()
   }
   //Serial1.print(message+ "#");
   char indicator;
-  double Tau[2];
+  double Current[2];
   //Serial1.print(message);
   int OpdelingsIndexIndicator = message.indexOf('#');
   if (OpdelingsIndexIndicator >= 0)
@@ -83,22 +83,17 @@ void loop()
       
       if (OpdelingsIndex >= 0) 
         {
-          Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
-          Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-          Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M");
-          
+          Current[0] = message.substring(0,OpdelingsIndex).toDouble();
+          Current[1] = message.substring(OpdelingsIndex+1).toDouble();          
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           
-          dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
-          dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(ID1, Current[0], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(ID2, Current[1], UNIT_MILLI_AMPERE);
+
+          Serial1.println("I#"+String(dxl.getPresentPosition(ID1, UNIT_DEGREE))+","+String(dxl.getPresentPosition(ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(ID1, UNIT_RPM))+","+String(dxl.getPresentVelocity(ID2, UNIT_RPM))+"#M");
           
         }
       
-    }
-    if (indicatorString.equals("P"))
-    {       
-       String positionNow = "P#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+message+"#M";
-       Serial1.print(positionNow);
     }
   }
   
