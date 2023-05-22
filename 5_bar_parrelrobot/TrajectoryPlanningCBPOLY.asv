@@ -69,10 +69,11 @@ ts =        [0, 10, 20, 30, 40, 50, 60, 70];
 
 
 %Points for theta1:
-points1 = [1.9320, listinvth1];
+points1 = [1.8629, listinvth1];
+lis
 %points1 = [1.5957, 1.5957, 1.5957]
 %Points for theta2:
-points2 = [1.7847,  listinvth2];
+points2 = [1.2870,  listinvth2];
 %points2 = listinvth2;
 pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];
 pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -163,7 +164,7 @@ for c = 1:L1-1
     title('Position (deg)');
     hold on
     
-    %plot(ts(c),points1(c), 'o')
+    plot(ts(c),points1(c), 'o')
     
 
     % Opdater Velocity plot 1
@@ -172,7 +173,7 @@ for c = 1:L1-1
     xlabel('t');
     ylabel('qdot');
     title('Velocity (deg / sec)');
-    %plot(ts(c),pointsdot1(c), 'o');
+    plot(ts(c),pointsdot1(c), 'o');
     hold on;
 
 
@@ -253,7 +254,7 @@ for c = 1:L2-1
     title('Position (deg)');
     hold on
     
-    %plot(ts(c),points2(c), 'o')
+    plot(ts(c),points2(c), 'o')
     
 
     % Opdater Velocity plot 2
@@ -262,7 +263,7 @@ for c = 1:L2-1
     xlabel('t');
     ylabel('qdot');
     title('Velocity (deg / sec)');
-    %plot(ts(c),pointsdot2(c), 'o');
+    plot(ts(c),pointsdot2(c), 'o');
     hold on;
 
 

@@ -6,7 +6,7 @@ import cv2 as cv
 import math
 
 
-arduino = serial.Serial(port='COM5', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 eng = matlab.engine.start_matlab()
 ts = np.loadtxt('ts.txt', delimiter=",")
 refq1 = np.loadtxt('refq1.txt', delimiter=",")
@@ -86,7 +86,7 @@ def SendCurrent(current):
     return positionNow
 
 
-def AskForPostion():
+def AskForPosition():
     while True:
 
         message = ("P#")
@@ -102,6 +102,42 @@ def AskForPostion():
         #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
 
     return positionNow
+
+def AskForVelcity():
+    while True:
+
+        message = ("V#")
+        VelcityNow = np.zeros((2,1))
+        returnMessage = write_read(message)
+        if returnMessage[0] == "V":
+            Vel = returnMessage[1].split(",")
+            VelcityNow[0][0] = float(Vel[0])
+            VelcityNow[1][0] = float(Vel[1])
+            print(VelcityNow)
+
+            break
+        #print("Positionerne er nu: "+ str(position[0]) + " og " + str(position[1]))
+
+    return VelcityNow
+
+def CalculateAngAcc(VelOld, tOld, VelcityNow):
+    #Make a 2x2 Matrix That holds the old position of the motor and the new
+    #Calculate velocity by: (ThetaNu - Theta Sidste  Sample)/ (Tiden Nu - Tiden Sidste Sample)
+    VelNew = VelcityNow
+    tNew = time.time()
+    vDif = np.zeros(shape= [2,1])
+    vDif[0] = VelNew[0]-VelOld[0]
+    vDif[1] = VelNew[1]-VelOld[1]
+
+    tDif = (tNew - tOld)
+    AngACC = vDif/tDif
+
+    #After Calculations has been made
+    VelOld = VelNew
+    tOld = tNew
+
+    return AngACC, VelOld, tOld
+
 def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
     #Teoretiske værdier for control system, skal muligvis ændres
 
@@ -154,16 +190,17 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 def main():
     #current = getCurrent(thNow, dthNow, ddthNow)
     #Initialize necessary functions
-    posOld = AskForPostion()
+    posOld = AskForPosition()
     positionNow = posOld
-
+    time.sleep(2)
+    velOld=AskForVelcity()
     tOld = time.time()
     tSample = 0.2  # Sample time for control system
     i = 0  # Variable resonsible for the itterations in given point
     j = 0  # Variable responsible for the current trajectory
     tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?
 
-    ts =  [0, 10, 20, 30, 40, 50, 60, 70]
+    ts = [0, 10, 20, 30, 40, 50, 60, 70]
 
 
 
@@ -197,13 +234,13 @@ def main():
                         i += 1
                         j += 1
 
-                    executingTime = sluttime-startTime
-                    print("time: "+str(executingTime))
-                    angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
-                    accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
-                    print("acc: "+ str(accNow))
 
-                    current = getCurrent(positionNow, angVelNow, accNow)
+                    #angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+                    #accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
+                    #print("acc: "+ str(accNow))
+
+                    #current = getCurrent(positionNow, angVelNow, accNow)
+
                     positionNow = SendCurrent(current)
                     print("postion:" + str(positionNow))
 
