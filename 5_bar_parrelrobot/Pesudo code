@@ -1,0 +1,114 @@
+Import the required libraries and modules
+
+Initialize serial communication with Arduino
+Initialize MATLAB engine
+
+Load the points- speed- and acceleration references from trajectory generation from files.
+
+def write_read(message): # Function to send and receive data from the Arduino Board with the Dynamixel shield.
+    while as long as there has not been a received message returned do
+        Send message to Arduino
+        Wait a short time to make time for data being used
+        data := returned message form Arduino
+        Split data in relation to "#"
+        If the list of the spilt return data is greater than 1 and the last Entry of the return message is "M" When
+            Stop the while loop because the Arduino has send a Confirmation of the sent data has been received
+
+    Return the split return message.
+
+
+def getCurrent(PositionNow,Angular Velocity,Controller Acceleration): #Function to calculate a current current //
+        for the motor using the current position, angular velocity and calculated controller acceleration
+    tau := Calculate new torque form matlab function dynamic.m, using the current position, //
+            angular velocity and calculated controller acceleration.
+    kt := 1.62 #Moter torque coefficient
+    current := tau/kt*1000 to get the current value in Ampere.
+    round value to 2 decimals.
+
+    Return current
+
+def SendCurrent(current): #Function to create the message with the calculated current and handles the received position
+    While the correct return message has not been received keep sending the message
+    Message := "I#current1,current2"
+    return message := write_read(message)
+    If the first part of the return message is equal to "I"
+        Then is the second part of the return message split by ","
+        PositionNow := The two numbers there comes from this split is set as the position of motor 1 and 2
+
+    Return PositionNow
+
+def AskForPosition()
+    While the correct return message has not been received keep sending the message
+    Message := "P#"
+    Return message := write_read(message)
+    If the first part of the return message is equal to "P"
+        Then is the second part of the return message split by ","
+        PositionNow := The two numbers there comes from this split is set as the position of motor 1 and 2
+
+    return PositionNow
+
+def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
+    # Function to compute acceleration to make up for the error there is in the system, //
+        uses the current position, angular velocity and the references from the trajectory calculation
+    Define the values for the controller parameters
+    Getting the correct corresponding references form trajectory to the current Iteration and //
+        the current trajectory between two points
+    Calculation the controller acceleration
+
+    returning Controller acceleration
+
+def CalculateAngVelocity(posOld, tOld, positionNow): #Function to Compute the current Angular velocity of the motors
+    Get the current position
+    Get the current time
+    Compyte the difference in the latest position and the current.
+    Calculate the time since last angular velocity calculation
+    Compute the angular velocity
+    Set the given current position as the old position and set the current time as the last calculation time.
+
+    Return the Angular Velocity, the new old position, and the new last calculation time.
+
+def Main() #The main function of the program
+    Start my asking for the current position := AskForPosition()
+    Set the current position as the old old position for use in the angle velocity calculation
+    Set the current time as the old time used for angle velocity calculation
+    Define, sample time of the system and values used to keep track of iteration and current trajectory
+    While #So the program run until it is stopped
+        Wait for input
+        If input := "Go" when start the program
+        Define time for sample as the current time
+        While the program still has a trajectory to follow run
+            Define the global time of the program time
+            If the tTimeToSample is less or equal than the global time when
+                Define the time the loop start as the current time
+                Add the sample time to the time to sample
+                If the iteration is 0 compute the number of reference points in the next trajectory
+                    Calculate the num of reference points by dividing the time of the trajectory by the sample time
+                If the iteration is greater or equal than the number of reference points when
+                    Set the iteration = 0
+                    Set i += 1
+                    Set j += 1
+
+
+                Calculate angVelNow, and get the new old position and time with the CalculateAngVelocity function
+                angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+                Calculate the controller acceleration mathing the current iteration and trajectory using the //
+                    controlSystem function
+                accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration,//
+                    path=j)
+                Calculate the new current with the getcurrent function
+                current = getCurrent(positionNow, angVelNow, accNow)
+
+                Get the current position form the return message for the message carring the new current for //
+                    the motors using the sendCurrent function
+                positionNow = SendCurrent(current)
+                Define the loop time as the current time subtracted the loop start time
+                Set the iteration += 1
+
+
+            If all iteration and trajectory's has been run when
+                set i = 0
+                Set j = 0
+                Stop the while loop
+
+            If escape is pressed on the keyboard
+                Stop the while loop and by that the program

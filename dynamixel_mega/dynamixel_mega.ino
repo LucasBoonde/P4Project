@@ -1,5 +1,16 @@
 #include <DynamixelShield.h>
 
+#if defined(ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_MEGA2560)
+  #include <SoftwareSerial.h>
+  SoftwareSerial soft_serial(7, 8); // DYNAMIXELShield UART RX/TX
+  #define DEBUG_SERIAL soft_serial
+#elif defined(ARDUINO_SAM_DUE) || defined(ARDUINO_SAM_ZERO)
+  #define DEBUG_SERIAL SerialUSB    
+#else
+  #define DEBUG_SERIAL Serial
+#endif
+
+
 const uint8_t DXL_ID = 1;
 const uint8_t DXL_ID2 = 2;
 
@@ -66,9 +77,10 @@ void loop()
     delay(2); //For at give tid til at alle characters bliver modtaget.
     //Serial1.print(message);
   }
-  //Serial1.print(message+ "#");
+  Serial1.print(message+ "#M");
   char indicator;
   double Tau[2];
+  double startTime = millis();
   //Serial1.print(message);
   int OpdelingsIndexIndicator = message.indexOf('#');
   if (OpdelingsIndexIndicator >= 0)
@@ -85,12 +97,16 @@ void loop()
         {
           Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
           Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
-          Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M");
+          
+          Serial1.println(message+"#M");
+          //Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2,UNIT_RPM))+"#M");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           
           dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
-          dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(DXL_ID2, 0, UNIT_MILLI_AMPERE);
+          
+          Serial1.println(String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2,UNIT_RPM))+"#M");
           
         }
       
@@ -98,7 +114,12 @@ void loop()
     if (indicatorString.equals("P"))
     {       
        String positionNow = "P#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+message+"#M";
-       Serial1.print(positionNow);
+       Serial1.println(positionNow);
+    }
+    if (indicatorString.equals("V"))
+    {       
+       String positionNow = "V#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2, UNIT_RPM))+message+"#M";
+       Serial1.println(positionNow);
     }
   }
   
@@ -110,7 +131,7 @@ void loop()
  
 
 
-  
+
 
 
   
