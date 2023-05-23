@@ -67,9 +67,7 @@ void loop()
       }
     message += c;
     delay(2); //For at give tid til at alle characters bliver modtaget.
-    //Serial1.print(message);
   }
-  //Serial1.print(message+ "#");
 
   char indicator;
 
@@ -95,7 +93,9 @@ void loop()
           
           dxl.setGoalCurrent(ID1, Current[0], UNIT_MILLI_AMPERE);
           dxl.setGoalCurrent(ID2, Current[1], UNIT_MILLI_AMPERE);
+          
 
+          delay(5); //delay for at give tid til at den nye current er sendt ud til motor
           unsigned long sampleTime = millis();
           Serial1.println("I#"+String(dxl.getPresentPosition(ID1, UNIT_DEGREE))+","+String(dxl.getPresentPosition(ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(ID1, UNIT_RPM))+","+String(dxl.getPresentVelocity(ID2, UNIT_RPM))+"#"+String(sampleTime)+"#M");
 

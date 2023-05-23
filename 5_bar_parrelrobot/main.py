@@ -23,7 +23,7 @@ def write_until_answer(x):
     return parts
 
 
-def SendCurrentReceivePosition(current, sampleTimeOld):
+def SendCurrentReceivePosition(current, sampleTimeOld, velocityOld):
     while True:
         message = ("I#"+str(current[0]) + ',' + str(current[1]))
         print("Besked fra PC:" + str(message))
@@ -43,13 +43,22 @@ def SendCurrentReceivePosition(current, sampleTimeOld):
             velocityNow[0] = float(velocityNow[0])
             velocityNow[1] = float(velocityNow[1])
 
+            velocityDiff = np.array([0, 0])
+            velocityDiff[0] = float(velocityNow[0]) - float(velocityOld[0])
+            velocityDiff[1] = float(velocityNow[1]) - float(velocityOld[1])
+
+            velocityOld = velocityNow
+
             sampleTimeNew = float(returnMessage[3])
             sampleTime = sampleTimeNew - sampleTimeOld
             #Gem sampleTimes tidspunktet som det gamle tidspunkt til næste beregning
+
             sampleTimeOld = sampleTimeNew
+
+
             break
 
-    return positionNow, velocityNow, sampleTime, sampleTimeOld
+    return positionNow, velocityNow, sampleTime, sampleTimeOld, velocityDiff, velocityOld
 
 
 def main():
@@ -61,36 +70,58 @@ def main():
         if txtInput == "Go":
 
             ZeroCurrent = np.array([0, 0])
-            posOld, velOld, sampleTime, sampleOldTime = SendCurrentReceivePosition(ZeroCurrent, 0)
+            posOld, velOld, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
+                SendCurrentReceivePosition(ZeroCurrent, 0, ZeroCurrent)
 
-            # print("Position start:" + str(posOld))
-            # print("-----------------------------------------")
-            # print("Velocity start:" + str(velOld))
-            # print("-----------------------------------------")
-            print("SampleTime start:" + str(sampleTime / 1000))
+            print("Position start:" + str(posOld))
+            print("-----------------------------------------")
+            print("Velocity start:" + str(velOld))
+            print("-----------------------------------------")
+
+            samOldSek = sampleTime/1000
+            print("SampleTime start:" + str(samOldSek))
+            print("-----------------------------------------")
+
+            accOld = np.array([float(velocityDiff[0]) / (sampleTime / 1000),
+                                        float(velocityDiff[1]) / (sampleTime / 1000)])
+            print("Acceleration start:" + str(accOld))
             print("-----------------------------------------")
 
             while True:
                     Current1 = np.array([150, 0])
                     Current2 = np.array([-150, 0])
 
-                    positionNow, velocityNow, sampleTime, sampleOldTime = SendCurrentReceivePosition(Current1, sampleOldTime)
+                    positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
+                        SendCurrentReceivePosition(Current1, sampleOldTime, velocityOld)
 
-                    #print("Position now:" + str(positionNow))
-                    #print("-----------------------------------------")
-                    #print("Velocity now:" + str(velocityNow))
-                    #print("-----------------------------------------")
-                    print("SampleTime now:" + str(sampleTime/1000))
+
+
+                    print("Position now:" + str(positionNow))
+                    print("-----------------------------------------")
+                    print("Velocity now:" + str(velocityNow))
+                    print("-----------------------------------------")
+                    sampleTimeSek = sampleTime/1000
+                    print("SampleTime now:" + str(sampleTimeSek))
+                    print("-----------------------------------------")
+                    accelerationNow = np.array([float(velocityDiff[0]) / (sampleTime / 1000),
+                                                float(velocityDiff[1]) / (sampleTime / 1000)])
+                    print("Acceleration now:"+ str(accelerationNow))
                     print("-----------------------------------------")
                     time.sleep(0.1)
 
-                    positionNow, velocityNow, sampleTime, sampleOldTime = SendCurrentReceivePosition(Current2,sampleOldTime)
-                    
-                    #print("Position now:" + str(positionNow))
-                    #print("-----------------------------------------")
-                    #print("Velocity now:" + str(velocityNow))
-                    #print("-----------------------------------------")
-                    print("SampleTime now:" + str(sampleTime/1000))
+                    positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
+                        SendCurrentReceivePosition(Current2, sampleOldTime, velocityOld)
+
+                    print("Position now:" + str(positionNow))
+                    print("-----------------------------------------")
+                    print("Velocity now:" + str(velocityNow))
+                    print("-----------------------------------------")
+                    sampleTimeSek = sampleTime / 1000
+                    print("SampleTime now:" + str(sampleTimeSek))
+                    print("-----------------------------------------")
+                    accelerationNow = np.array([float(velocityDiff[0]) / (sampleTime / 1000),
+                                                float(velocityDiff[1]) / (sampleTime / 1000)])
+                    print("Acceleration now:" + str(accelerationNow))
                     print("-----------------------------------------")
                     time.sleep(0.1)
 
