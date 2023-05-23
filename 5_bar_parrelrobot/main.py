@@ -89,7 +89,6 @@ def main():
 
             while True:
                     Current1 = np.array([150, 0])
-                    Current2 = np.array([-150, 0])
 
                     positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
                         SendCurrentReceivePosition(Current1, sampleOldTime, velocityOld)
@@ -108,6 +107,11 @@ def main():
                     print("Acceleration now:"+ str(accelerationNow))
                     print("-----------------------------------------")
                     time.sleep(0.1)
+
+
+                    #Gå til Current2 iteration
+                    Current2 = np.array([-150, 0])
+
 
                     positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
                         SendCurrentReceivePosition(Current2, sampleOldTime, velocityOld)
