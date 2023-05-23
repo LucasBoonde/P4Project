@@ -1,0 +1,80 @@
+positions:[0.5206317158699084, 0.9138543963442308]
+positions:[0.5237733085234983, 0.9138543963442308]
+positions:[1.2255702007504181, 0.9138543963442308]
+positions:[0.887674457564316, 0.9138543963442308]
+positions:[1.3009684244365733, 0.9138543963442308]
+positions:[0.938463538797351, 0.9138543963442308]
+positions:[1.3700834628155485, 0.9138543963442308]
+positions:[0.9922196797587763, 0.9138543963442308]
+positions:[1.4391985011945239, 0.9138543963442308]
+positions:[1.0536552694289767, 0.9138543963442308]
+positions:[1.4821336007935846, 0.9138543963442308]
+positions:[1.1273081638631375, 0.9138543963442308]
+positions:[1.5788248413540704, 0.9138543963442308]
+positions:[1.2056734472776827, 0.9122836000174361]
+positions:[1.6434020236778606, 0.9138543963442308]
+positions:[1.2424998944947632, 0.9138543963442308]
+positions:[1.6465436163314504, 0.9138543963442308]
+positions:[1.2395328347663728, 0.9138543963442308]
+positions:[1.647939879733046, 0.9138543963442308]
+positions:[1.2486085468767434, 0.9138543963442308]
+velocities:[0.0, 0.0]
+velocities:[0.0, 0.0]
+velocities:[31.6, 0.0]
+velocities:[-22.44, 0.0]
+velocities:[24.5, 0.0]
+velocities:[-22.44, 0.0]
+velocities:[24.96, 0.0]
+velocities:[-23.36, 0.0]
+velocities:[25.65, 0.0]
+velocities:[-23.36, 0.0]
+velocities:[24.73, 0.0]
+velocities:[-22.44, 0.0]
+velocities:[25.65, 0.0]
+velocities:[-23.13, 0.0]
+velocities:[24.96, 0.0]
+velocities:[-22.9, 0.0]
+velocities:[23.82, 0.0]
+velocities:[-22.9, 0.0]
+velocities:[23.82, 0.0]
+velocities:[-22.9, 0.0]
+accelerations:[0. 0.]
+accelerations:[0. 0.]
+accelerations:[102.64900662   0.        ]
+accelerations:[-181.81818182    0.        ]
+accelerations:[150.32679739   0.        ]
+accelerations:[-157.53424658    0.        ]
+accelerations:[153.59477124   0.        ]
+accelerations:[-163.26530612    0.        ]
+accelerations:[158.06451613   0.        ]
+accelerations:[-164.98316498    0.        ]
+accelerations:[156.8627451   0.       ]
+accelerations:[-158.78378378    0.        ]
+accelerations:[156.35179153   0.        ]
+accelerations:[-163.26530612    0.        ]
+accelerations:[155.33980583   0.        ]
+accelerations:[-151.61290323    0.        ]
+accelerations:[148.86731392   0.        ]
+accelerations:[-147.90996785    0.        ]
+accelerations:[149.35064935   0.        ]
+accelerations:[-148.38709677    0.        ]
+timers:8.067
+timers:8.269
+timers:8.571
+timers:8.868
+timers:9.174
+timers:9.466
+timers:9.772
+timers:10.066
+timers:10.376
+timers:10.673
+timers:10.979
+timers:11.275
+timers:11.582
+timers:11.876
+timers:12.185
+timers:12.495
+timers:12.804
+timers:13.115
+timers:13.423
+timers:13.733

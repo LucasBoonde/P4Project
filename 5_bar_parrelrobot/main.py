@@ -3,12 +3,18 @@ import numpy as np
 import time
 import serial
 import math
-
+from collections import deque
 
 arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
 
 eng = matlab.engine.start_matlab()
 
+
+positions = deque()
+velocities = deque()
+accelerations = deque()
+timers = deque()
+deques = [("positions", positions), ("velocities", velocities), ("accelerations", accelerations), ("timers", timers)]
 
 def write_until_answer(x):
 
@@ -66,6 +72,7 @@ def main():
     # Add other functions that should be initialized when the script starts
     # Add input in console, to tell the script to start GOING!
     while True:
+
         txtInput = input("Skriv Go for at starte programmet: ")
         if txtInput == "Go":
 
@@ -87,7 +94,9 @@ def main():
             print("Acceleration start:" + str(accOld))
             print("-----------------------------------------")
 
-            while True:
+
+
+            for i in range(10):
                     Current1 = np.array([150, 0])
 
                     positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
@@ -102,16 +111,22 @@ def main():
                     sampleTimeSek = sampleTime/1000
                     print("SampleTime now:" + str(sampleTimeSek))
                     print("-----------------------------------------")
+                    sampleOldTimeSek = float(sampleOldTime)/1000
+
                     accelerationNow = np.array([float(velocityDiff[0]) / (sampleTime / 1000),
                                                 float(velocityDiff[1]) / (sampleTime / 1000)])
                     print("Acceleration now:"+ str(accelerationNow))
                     print("-----------------------------------------")
-                    time.sleep(0.1)
 
+                    positions.append(positionNow)
+                    velocities.append(velocityNow)
+                    accelerations.append(accelerationNow)
+                    timers.append(sampleOldTimeSek)
+
+                    time.sleep(0.1)
 
                     #Gå til Current2 iteration
                     Current2 = np.array([-150, 0])
-
 
                     positionNow, velocityNow, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
                         SendCurrentReceivePosition(Current2, sampleOldTime, velocityOld)
@@ -127,9 +142,28 @@ def main():
                                                 float(velocityDiff[1]) / (sampleTime / 1000)])
                     print("Acceleration now:" + str(accelerationNow))
                     print("-----------------------------------------")
+                    sampleOldTimeSek = float(sampleOldTime) / 1000
+
+                    accelerationNow = np.array([float(velocityDiff[0]) / (sampleTime / 1000),
+                                                float(velocityDiff[1]) / (sampleTime / 1000)])
+                    print("Acceleration now:" + str(accelerationNow))
+                    print("-----------------------------------------")
+
+                    positions.append(positionNow)
+                    velocities.append(velocityNow)
+                    accelerations.append(accelerationNow)
+                    timers.append(sampleOldTimeSek)
+
                     time.sleep(0.1)
 
+        with open("Values.txt", "w") as f:
+            for deque_name, deque in deques:
+                for value in deque:
+                    f.write(str(deque_name)+":" + str(value) + "\n")
 
+        posOld, velOld, sampleTime, sampleOldTime, velocityDiff, velocityOld = \
+            SendCurrentReceivePosition(ZeroCurrent, 0, ZeroCurrent)
+        break
 
 
 
