@@ -1,52 +1,4 @@
-%Constraints for start og slutpunkt, Thetaværdi og hastighed.
-theta0 = 30;
-thetaf = 40;
-thetad0 = 0;
-thetadf = 0;
-tfinal = 1;
-tstart = 0;
 
-%ts = [0, 2, 4, 8, 10];
-%points = [10, 20, 0, 30, 40];
-%pointsdot = [0, -10, 20, 3, 0];
-
-%Ligningerne til at beregne a0 -> a3
-T = tfinal - tstart;	
-a0 = theta0;
-a1 = thetad0;
-a2 = (-3 * (theta0 - thetaf) - (2 * thetad0+thetadf )*T)/ T ^ 2;
-a3 = (2 * (theta0 - thetaf) + (thetad0+thetadf )*T)/ T ^ 3;
-
-t = linspace(tstart,tfinal, 10);
-
-%Funktionerne der beskriver pos, vel og acc
-q = a0 + a1*t+a2*t.^2+a3*t.^3;
-qdot = a1 + 2*a2*t+3*a3*t.^2;
-qdotdot = 2*a2+6*a3*t;
-
-%Pos
-figure
-plot(t, q)
-xlabel('t');
-ylabel('q');
-title('Position (deg)');
-
-%Vel
-figure
-plot(t, qdot)
-xlabel('t');
-ylabel('qdot');
-title('Velocity (deg / sec)');
-
-%Acc
-figure
-plot(t, qdotdot)
-xlabel('t');
-ylabel('qdotdot');
-title('Acceleration (deg / sec^2)');
-
-
-%%
 % Create figure windows for each plot
 figure(1);
 xlabel('t');
@@ -69,7 +21,7 @@ ts =        [0, 10, 20, 30, 40, 50, 60, 70];
 
 
 %Points for theta1:
-points1 = [1.8629, listinvth1];
+points1 = [1.8629, listinvth1]; %listinvth kommer fra inverskinematic
 %points1 = [1.5957, 1.5957, 1.5957]
 %Points for theta2:
 points2 = [1.2870,  listinvth2];
@@ -281,49 +233,3 @@ writematrix(listdq1,'refdq1.txt')
 writematrix(listdq2,'refdq2.txt')
 writematrix(listddq1,'refddq1.txt')
 writematrix(listddq2,'refddq2.txt')
-%%
-
-
-
-
-%% Cubic Trajectory Planner built in
-
-
-
-wpts = [1 4 4 3 -2 0; 0 1 2 4 3 1];
-tpts = 0:5;
-
-tvec = 0:0.01:5;
-
-[q, qd, qdd, pp] = cubicpolytraj(wpts, tpts, tvec);
-
-plot(tvec, q)
-hold all
-plot(tpts, wpts, 'x')
-xlabel('t')
-ylabel('Positions')
-legend('X-positions','Y-positions')
-hold off
-
-
-%Show x- y-position
-figure
-plot(q(1,:),q(2,:),'-b',wpts(1,:),wpts(2,:),'or')
-xlabel('X')
-ylabel('Y')
-
-q(0.5)
-
-%%
-
-
-function qvalues = generateQMatrix(rows, cols)
-
-    qvalues = zeros(rows,cols);
-
-    for i =c:rows
-        for j = 1:cols
-        qvalues(i,j)= i;
-        end
-    end
-end

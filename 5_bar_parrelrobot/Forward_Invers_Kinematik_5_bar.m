@@ -27,7 +27,6 @@ d = 0.30;
 %Pys = subs(Py, FVarOut, FVarIn)
 
 
-%%
 %invers kinematic
 xpoints = [0.0, -0.10, 0.09, -0.10, 0.09, -0.01, -0.01];
 ypoints = [0.54, 0.675, 0.605, 0.605, 0.675, 0.605, 0.675];
