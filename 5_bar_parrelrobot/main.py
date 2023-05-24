@@ -165,7 +165,7 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 
 
 def main():
-    #current = getCurrent(thNow, dthNow, ddthNow)
+
     #Initialize necessary functions
     posOld = AskForPostion()
     positionNow = posOld
@@ -176,7 +176,7 @@ def main():
     j = 0  # Variable responsible for the current trajectory
     tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?
 
-    ts =  [0, 10, 20, 30, 40, 50, 60, 70]
+
 
 
 
