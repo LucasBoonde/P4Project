@@ -20,8 +20,50 @@ DynamixelShield dxl;
 
 //This namespace is required to use Control table item names
 using namespace ControlTableItem;
+float velOld = 0;
 
-
+void AccSample(float velOld)
+{
+  //Serial1.print("hej");
+  float millis_ref = millis() - 10;
+  float liste[200];
+  float tid[200];
+  for( int i = 0; i<sizeof(liste);i++)
+  {
+    float tNow = millis();
+    if (tNow - millis_ref >= 10)
+    {
+      //Serial1.print("hej");
+      float tDiff = tNow - millis_ref;
+      millis_ref += 10;
+      float velNow = dxl.getPresentVelocity(DXL_ID, UNIT_RPM);
+      float velDiff = velNow- velOld;
+      float accNow = velDiff/tDiff;
+      liste[i] = accNow;
+      tid[i] =  tDiff;          
+    }
+  }
+  for (int i = 0; i < sizeof(liste) / sizeof(liste[0]); i++)
+  {
+    Serial1.print(liste[i]);
+    if (i < sizeof(liste) / sizeof(liste[0]) - 1) 
+    {
+      Serial1.print(",");
+    }
+  }
+  Serial1.print("#");
+  for (int i = 0; i < sizeof(tid) / sizeof(tid[0]); i++)
+  {
+    Serial1.print(tid[i]);
+    if (i < sizeof(tid) / sizeof(tid[0]) - 1) 
+    {
+      Serial1.print(",");
+    }
+  }
+  Serial1.print("#M");
+  
+}
+  
 
 void setup() {
   //Åbne serial forbindelse
@@ -48,7 +90,8 @@ void setup() {
   dxl.torqueOff(DXL_ID2);
   dxl.setOperatingMode(DXL_ID2, OP_CURRENT);
   dxl.torqueOn(DXL_ID2);
-
+  
+  
 
 
 
@@ -77,7 +120,7 @@ void loop()
     delay(2); //For at give tid til at alle characters bliver modtaget.
     //Serial1.print(message);
   }
-  Serial1.print(message+ "#M");
+  
   char indicator;
   double Tau[2];
   double startTime = millis();
@@ -98,13 +141,14 @@ void loop()
           Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
           Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
           
-          Serial1.println(message+"#M");
+          //Serial1.println(message+"#M");
           //Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2,UNIT_RPM))+"#M");
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           
           dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
           dxl.setGoalCurrent(DXL_ID2, 0, UNIT_MILLI_AMPERE);
+          
           
           Serial1.println(String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2,UNIT_RPM))+"#M");
           
@@ -121,9 +165,16 @@ void loop()
        String positionNow = "V#"+String(dxl.getPresentVelocity(DXL_ID, UNIT_RPM))+","+String(dxl.getPresentVelocity(DXL_ID2, UNIT_RPM))+message+"#M";
        Serial1.println(positionNow);
     }
+    if (indicatorString.equals("A"))
+    {  
+       dxl.setGoalCurrent(DXL_ID, 100, UNIT_MILLI_AMPERE);
+       dxl.setGoalCurrent(DXL_ID2, 0, UNIT_MILLI_AMPERE); 
+       //AccSample(velOld);
+    }
   }
-  
-  
+
+  AccSample(velOld);
+
 
   
   

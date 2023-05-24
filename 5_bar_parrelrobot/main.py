@@ -7,7 +7,7 @@ import math
 
 
 arduino = serial.Serial(port='COM8', baudrate=115200, timeout=.1)
-eng = matlab.engine.start_matlab()
+#eng = matlab.engine.start_matlab()
 ts = np.loadtxt('ts.txt', delimiter=",")
 refq1 = np.loadtxt('refq1.txt', delimiter=",")
 refq2 = np.loadtxt('refq2.txt', delimiter=",")
@@ -40,17 +40,16 @@ ddthNow[1][0] = 1.12
 
 def write_read(x):
 
-    while True:
-        arduino.write(bytes(x, 'utf-8'))
-        print(x)
-        time.sleep(0.05)
-        data = arduino.readline().decode().strip()
-        parts = data.split("#")
-        print(parts)
-        if len(parts) > 1 and parts[len(parts) - 1] == "M": #Kig efter om det sidste element i den modtagene besked er en Stopbesked
-            break
+    arduino.write(bytes(x, 'utf-8'))
+    print(x)
+    time.sleep(0.05)
+    data = arduino.readline().decode().strip()
+    parts = data.split("#")
+    print(parts)
+    if len(parts) > 1 and parts[len(parts) - 1] == "M": #Kig efter om det sidste element i den modtagene besked er en Stopbesked
+        return parts
 
-    return parts
+
 
 def getCurrent(thNow,dthNow,ddqC):
     tau = eng.dynamic(thNow[0][0], thNow[1][0], dthNow[0][0], dthNow[1][0], ddqC[0][0], ddqC[1][0])
@@ -190,10 +189,10 @@ def CalculateAngVelocity(posOld, tOld, positionNow):
 def main():
     #current = getCurrent(thNow, dthNow, ddthNow)
     #Initialize necessary functions
-    posOld = AskForPosition()
-    positionNow = posOld
+    #posOld = AskForPosition()
+    #positionNow = posOld
     time.sleep(2)
-    velOld=AskForVelcity()
+    #velOld=AskForVelcity()
     tOld = time.time()
     tSample = 0.2  # Sample time for control system
     i = 0  # Variable resonsible for the itterations in given point
@@ -210,60 +209,73 @@ def main():
     while True:
         txtInput = input("Skriv Go for at starte programmet: ")
         if txtInput == "Go":
+            while True:
 
-            tTimetoSample = time.time()
+
+
+                msg = "A#"
+                returnmsg = write_read(msg)
+                received_acc = []
+                received_tstep = []
+                if returnmsg is not None:
+                    received_acc = [float(num) for num in returnmsg[0].split(',')]
+                    received_tstep= [float(num) for num in returnmsg[1].split(',')]
+                print(received_acc)
+                print(received_tstep)
+
+            #tTimetoSample = time.time()
 
 
             # Make ts = ts[0] og points[0]
 
-            while True:
-
-                tGlobal = time.time()  # Sets tStartLoop = actual time
-
-                if tTimetoSample <= tGlobal:
-                    tStarLoop = time.time()
-                    tTimetoSample = tTimetoSample + tSample
-
-                    if tItteration == 0:  # If itteration is 0, calculate number of points in next trajectory
-                        numPtsInTraj = round((ts[i + 1] - ts[i]) / tSample)
-
-                    if tItteration >= numPtsInTraj:  # If tItteration is == points in current trajectory, go to the next one
-                        # ts[i] = ts[i + 1]
-                        # points[j] = points[j + 1]
-                        tItteration = 0
-                        i += 1
-                        j += 1
-
-
-                    #angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
-                    #accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
-                    #print("acc: "+ str(accNow))
-
-                    #current = getCurrent(positionNow, angVelNow, accNow)
-
-                    positionNow = SendCurrent(current)
-                    print("postion:" + str(positionNow))
-
-
-                    sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
-                    tItteration += 1  # adds one to the itteration
-                    print("Loop took: ", + sFinLoop, str(" Seconds"))
-                    print("-----------------------------------------")
-                    print("---------------")
-                    print("---------------")
-                    print("At Itteration: ", + tItteration)
-                    print("-----------------------------------------")
-                    print("Working on crack: ", + j + 1, str("and currently at: "), + i + 1, str("of: "),
-                          + numPtsInTraj, str("points"))
-                    print("-----------------------------------------")
-                if i >= len(ts) and j >= len(ts):
-                    i = 0
-                    j = 0
-                    break
-
-                k = cv.waitKey(1)
-                if k == ord('q'):
-                    break
+            #while True:
+#
+            #    tGlobal = time.time()  # Sets tStartLoop = actual time
+#
+            #    if tTimetoSample <= tGlobal:
+            #        tStarLoop = time.time()
+            #        tTimetoSample = tTimetoSample + tSample
+#
+            #        if tItteration == 0:  # If itteration is 0, calculate number of points in next trajectory
+            #            numPtsInTraj = round((ts[i + 1] - ts[i]) / tSample)
+#
+            #        if tItteration >= numPtsInTraj:  # If tItteration is == points in current trajectory, go to the next one
+            #            # ts[i] = ts[i + 1]
+            #            # points[j] = points[j + 1]
+            #            tItteration = 0
+            #            i += 1
+            #            j += 1
+#
+#
+            #        #angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+            #        #accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
+            #        #print("acc: "+ str(accNow))
+#
+            #        #current = getCurrent(positionNow, angVelNow, accNow)
+#
+            #        #positionNow = SendCurrent(current)
+            #        #print("postion:" + str(positionNow))
+#
+#
+            #        sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
+            #        tItteration += 1  # adds one to the itteration
+            #        print("Loop took: ", + sFinLoop, str(" Seconds"))
+            #        print("-----------------------------------------")
+            #        print("---------------")
+            #        print("---------------")
+            #        print("At Itteration: ", + tItteration)
+            #        print("-----------------------------------------")
+            #        print("Working on crack: ", + j + 1, str("and currently at: "), + i + 1, str("of: "),
+            #              + numPtsInTraj, str("points"))
+            #        print("-----------------------------------------")
+            #    if i >= len(ts) and j >= len(ts):
+            #        i = 0
+            #        j = 0
+            #        break
+#
+            #    k = cv.waitKey(1)
+            #    if k == ord('q'):
+            #        break
 
 if __name__ == "__main__":
     main()
