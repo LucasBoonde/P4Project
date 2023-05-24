@@ -57,6 +57,19 @@ def getCurrent(thNow,dthNow,ddqC):
     tau = np.around(tau, decimals=4).astype(float)
     kt = 1.62
     current = np.round(np.divide(tau, kt) * 1000, decimals=2)
+    # Deadband for Motor 1
+    if 0 <= current[0]:
+        current += 100
+
+    if current[0] <0:
+        current -= 100
+
+    #Deadband for Motor 2
+    if 0 <= current[1]:
+        current += 100
+
+    if current[1] <0:
+        current -= 100
     current1, current2 = float(current[0]), float(current[1])
     current = np.array([[current1], [current2]])
     print("current: " + str(current[0][0]) + " og " + str(current[1][0]))
