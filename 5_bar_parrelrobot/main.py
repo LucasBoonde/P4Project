@@ -129,18 +129,20 @@ def controlSystem(thNow, dthNow, samplingtime, samplingsIterations, path):
     thRef = np.zeros((2,1))
     thRef[0][0] = refq1[path][samplingsIterations]
     thRef[1][0] = refq2[path][samplingsIterations]
-    dthRef = np.zeros((2, 1))
-    dthRef[0][0] = refdq1[path][samplingsIterations]
-    dthRef[1][0] = refdq2[path][samplingsIterations]
-    ddthRef = np.zeros((2, 1))
-    ddthRef[0][0] = refddq1[path][samplingsIterations]
-    ddthRef[1][0] = refddq2[path][samplingsIterations]
+    string = ("I#"+str(thRef[0][0]) + ',' + str(thRef[1][0]))
+    write_read(string)
+    #dthRef = np.zeros((2, 1))
+    #dthRef[0][0] = refdq1[path][samplingsIterations]
+    #dthRef[1][0] = refdq2[path][samplingsIterations]
+    #ddthRef = np.zeros((2, 1))
+    #ddthRef[0][0] = refddq1[path][samplingsIterations]
+    #ddthRef[1][0] = refddq2[path][samplingsIterations]
 
 
-    ddqControl[0] = ddthRef[0][0] + kp * (thRef[0][0] - thNow[0][0]) + kd*(dthRef[0][0] - dthNow[0][0]) + ki * (thRef[0][0] - thNow[0][0]) * samplingtime
-    ddqControl[1] = ddthRef[1][0] + kp * (thRef[1][0] - thNow[1][0]) + kd*(dthRef[1][0] - dthNow[1][0]) + ki * (thRef[1][0] - thNow[1][0]) * samplingtime
+    #ddqControl[0] = ddthRef[0][0] + kp * (thRef[0][0] - thNow[0][0]) + kd*(dthRef[0][0] - dthNow[0][0]) + ki * (thRef[0][0] - thNow[0][0]) * samplingtime
+    #ddqControl[1] = ddthRef[1][0] + kp * (thRef[1][0] - thNow[1][0]) + kd*(dthRef[1][0] - dthNow[1][0]) + ki * (thRef[1][0] - thNow[1][0]) * samplingtime
 
-    return ddqControl
+    #return ddqControl
 
 
 def CalculateAngVelocity(posOld, tOld, positionNow):
@@ -210,14 +212,14 @@ def main():
                         i += 1
                         j += 1
 
+                    controlSystem(0,0,0,samplingsIterations=tItteration,path=j)
+                    #angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
+                    #accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
+                    #print("acc: "+ str(accNow))
 
-                    angVelNow, posOld, tOld = CalculateAngVelocity(posOld, tOld, positionNow)
-                    accNow = controlSystem(positionNow, angVelNow, samplingtime=tSample, samplingsIterations=tItteration, path=j)
-                    print("acc: "+ str(accNow))
-
-                    current = getCurrent(positionNow, angVelNow, accNow)
-                    positionNow = SendCurrent(current)
-                    print("postion:" + str(positionNow))
+                    #current = getCurrent(positionNow, angVelNow, accNow)
+                    #positionNow = SendCurrent(current)
+                    #print("postion:" + str(positionNow))
 
 
                     sFinLoop = time.time() - tStarLoop  # Checks the time at the end.
