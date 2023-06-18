@@ -17,18 +17,20 @@ ylabel('qdotdot');
 title('Acceleration (deg / sec^2)');
 
 %Tidsintervaller mellem punkterne
-ts =        [0, 10, 20, 30, 40, 50, 60, 70];
-
+%ts =        [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+ts = [0, 10, 20, 30, 40, 50, 60, 70];
 
 %Points for theta1:
-points1 = [1.9982, listinvth1]; %listinvth kommer fra inverskinematic
+points1 = [1.5006, listinvth1]; %listinvth kommer fra inverskinematic
 %points1 = [1.5957, 1.5957, 1.5957]
+%points1 = listinvth1;
 %Points for theta2:
-points2 = [1.1426,  listinvth2];
+points2 = [1.6725,  listinvth2];
 %points2 = listinvth2;
+%pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+%pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];  
 pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];
 pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0];  
-
 
 
 

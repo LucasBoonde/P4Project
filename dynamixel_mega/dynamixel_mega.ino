@@ -83,9 +83,36 @@ void loop()
       
       if (OpdelingsIndex >= 0) 
         {
-          Tau[0] = message.substring(0,OpdelingsIndex).toDouble();
-          Tau[1] = message.substring(OpdelingsIndex+1).toDouble();
+          double Ref[2];
+          Ref[0] = message.substring(0,OpdelingsIndex).toDouble();
+          Ref[1] = message.substring(OpdelingsIndex+1).toDouble();
           Serial1.println("I#"+String(dxl.getPresentPosition(DXL_ID, UNIT_DEGREE))+","+String(dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE))+"#M");
+          Ref[0] = (Ref[0]*180)/PI;
+          Ref[1] = (Ref[1]*180)/PI;
+          double Tau[2];
+          double pos[2];
+          double vel[2];
+          double corr_cnst = 90.0;
+
+          pos[0] = dxl.getPresentPosition(DXL_ID, UNIT_DEGREE);
+          pos[1] = dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE);
+
+          vel[0] = dxl.getPresentVelocity(DXL_ID, UNIT_RPM);
+          vel[1] = dxl.getPresentVelocity(DXL_ID2, UNIT_RPM);
+
+          Tau[0] = 2.0 * (Ref[0] - pos[0]) - 5 * vel[0];
+          if (Tau[0] > 0) 
+           Tau[0] += corr_cnst;
+          if (Tau[0] < 0)
+           Tau[0] -= corr_cnst;
+
+          Tau[1] = 2.0 * (Ref[1] - pos[1]) - 5 * vel[1];
+           if (Tau[1] > 0)
+          Tau[1] += corr_cnst;
+           if (Tau[1] < 0)
+          Tau[1] -= corr_cnst;
+          
+
           
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           
