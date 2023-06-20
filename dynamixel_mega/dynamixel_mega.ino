@@ -92,7 +92,7 @@ void loop()
           double Tau[2];
           double pos[2];
           double vel[2];
-          double corr_cnst = 90.0;
+          double corr_cnst = 100.0;
 
           pos[0] = dxl.getPresentPosition(DXL_ID, UNIT_DEGREE);
           pos[1] = dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE);
@@ -117,7 +117,7 @@ void loop()
           //Kør robotten til de givne Tau* værdier (Vi prøver først lige med positions værdier i grader) 
           
           dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
-          dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
+          dxl.setGoalCurrent(DXL_ID2, 0, UNIT_MILLI_AMPERE);
           
         }
       

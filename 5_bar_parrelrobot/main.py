@@ -173,7 +173,7 @@ def main():
     positionNow = posOld
 
     tOld = time.time()
-    tSample = 0.2  # Sample time for control system
+    tSample = 0.1  # Sample time for control system
     i = 0  # Variable resonsible for the itterations in given point
     j = 0  # Variable responsible for the current trajectory
     tItteration = 0  # number of itterations the current trajectory - Måske skal den være 1?

@@ -50,7 +50,7 @@ void loop()
   double Tau[2];
   double pos[2];
   double vel[2];
-  double corr_cnst = 20.0;
+  double corr_cnst = 100.0;
 
   pos[0] = dxl.getPresentPosition(DXL_ID, UNIT_DEGREE);
   pos[1] = dxl.getPresentPosition(DXL_ID2, UNIT_DEGREE);
@@ -58,7 +58,7 @@ void loop()
   vel[0] = dxl.getPresentVelocity(DXL_ID, UNIT_RPM);
   vel[1] = dxl.getPresentVelocity(DXL_ID2, UNIT_RPM);
 
-  Tau[0] = 2.0 * (90.0 - pos[0]) - 5 * vel[0];
+  Tau[0] = 2 * (90.0 - pos[0]) - 5 * vel[0];
   if (Tau[0] > 0)
     Tau[0] += corr_cnst;
   if (Tau[0] < 0)
@@ -73,6 +73,6 @@ void loop()
 
 
   dxl.setGoalCurrent(DXL_ID, Tau[0], UNIT_MILLI_AMPERE);
-  dxl.setGoalCurrent(DXL_ID2, Tau[1], UNIT_MILLI_AMPERE);
+  dxl.setGoalCurrent(DXL_ID2, 0, UNIT_MILLI_AMPERE);
 
 }

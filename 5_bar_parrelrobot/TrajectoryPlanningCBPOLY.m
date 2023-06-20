@@ -21,23 +21,23 @@ title('Acceleration (deg / sec^2)');
 ts = [0, 10, 20, 30, 40, 50, 60, 70];
 
 %Points for theta1:
-points1 = [1.5006, listinvth1]; %listinvth kommer fra inverskinematic
+points1 = [2.0305, listinvth1]; %listinvth kommer fra inverskinematic
 %points1 = [1.5957, 1.5957, 1.5957]
 %points1 = listinvth1;
 %Points for theta2:
-points2 = [1.6725,  listinvth2];
+points2 = [1.1288,  listinvth2];
 %points2 = listinvth2;
 %pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 %pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];  
-pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];
+%points1 = [1.5819, 1.5819, 1.5819, 1.5819, 1.5819, 1.5819, 1.5819, 1.5819];
+%points2 = [0, 0, 0, 0, 0, 0, 0, 0];  
+pointsdot1 = [0, 0, 0, 0, 0, 0, 0, 0];  
 pointsdot2 = [0, 0, 0, 0, 0, 0, 0, 0];  
-
-
 
 %Længden af Arrayet for punkterne
 L1 = length(points1);
 L2 = length(points2);
-Ti = 0.2; %Sample Time
+Ti = 0.1; %Sample Time
 
 n = length(ts);
 diffs= diff(ts)/Ti;
